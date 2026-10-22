@@ -6,9 +6,9 @@ import { ensureSession } from "./ensureSession";
 import { withNetworkTimeout } from "../../lib/networkUtils";
 import GlobalJS from "./GlobalJS";
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 
 export default function useCategoryActions() {
@@ -78,12 +78,12 @@ export default function useCategoryActions() {
             ));
             setLoadingOpen(false);
             setSnackSev('success');
-            setSnackText('Category Balanced!');
+            setSnackText('Categoria equilibrada!');
             setSnackOpen(true);
             return null;
         } catch (err: any) {
             setLoadingOpen(false);
-            return err.message || 'Network error — try again when online';
+            return err.message || 'Erro de rede — tente novamente quando estiver online';
         }
     }
 
@@ -107,18 +107,18 @@ export default function useCategoryActions() {
             ));
             setLoadingOpen(false);
             setSnackSev('success');
-            setSnackText('Allocated ' + formatter.format(remaining) + ' to this category');
+            setSnackText('Alocado ' + formatter.format(remaining) + ' nesta categoria');
             setSnackOpen(true);
             return null;
         } catch (err: any) {
             setLoadingOpen(false);
-            return err.message || 'Network error — try again when online';
+            return err.message || 'Erro de rede — tente novamente quando estiver online';
         }
     }
 
     function promptDeleteCategory() {
-        setCheckTitle('Are you sure you want to delete this category?');
-        setCheckDetails('WARNING: This will delete all transactions assigned to this category as well.');
+        setCheckTitle('Tem certeza que deseja excluir esta categoria?');
+        setCheckDetails('ATENÇÃO: todas as transações desta categoria também serão excluídas.');
         setAreYouSureOpen(true);
     }
 
@@ -140,12 +140,12 @@ export default function useCategoryActions() {
             setTransactionsArray(transactionsArray.filter(el => el.categoryID !== currentCategoryID));
             setLoadingOpen(false);
             setSnackSev('success');
-            setSnackText('Category deleted');
+            setSnackText('Categoria excluída');
             setSnackOpen(true);
             return null;
         } catch (err: any) {
             setLoadingOpen(false);
-            return err.message || 'Network error — try again when online';
+            return err.message || 'Erro de rede — tente novamente quando estiver online';
         }
     }
 
@@ -174,12 +174,12 @@ export default function useCategoryActions() {
             ));
             setLoadingOpen(false);
             setSnackSev('success');
-            setSnackText('Category updated!');
+            setSnackText('Categoria atualizada!');
             setSnackOpen(true);
             return null;
         } catch (err: any) {
             setLoadingOpen(false);
-            return err.message || 'Network error — try again when online';
+            return err.message || 'Erro de rede — tente novamente quando estiver online';
         }
     }
 

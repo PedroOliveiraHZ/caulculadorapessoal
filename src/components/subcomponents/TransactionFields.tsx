@@ -15,9 +15,9 @@ import { styled, lighten, darken, alpha } from '@mui/system';
 import type { Dayjs } from 'dayjs';
 import type { CategoryGroupOption } from '../extras/useCategoryGroups';
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 
 const GroupHeader = styled('div')(({ theme }) => ({
@@ -73,7 +73,7 @@ interface TransactionFieldsProps {
 export default function TransactionFields({
     amount,
     onAmountChange,
-    amountLabel = 'Amount',
+    amountLabel = 'Valor',
     autoFocusAmount = false,
     focusAmountKey,
     showTypeToggle = true,
@@ -83,7 +83,7 @@ export default function TransactionFields({
     onDateChange,
     title,
     onTitleChange,
-    titleLabel = 'Title',
+    titleLabel = 'Título',
     titleRequired = false,
     showCategory = true,
     category = null,
@@ -179,8 +179,8 @@ export default function TransactionFields({
                         },
                     }}
                 >
-                    <ToggleButton value='income'><TrendingUpIcon sx={{ mr: 0.5 }} />Income</ToggleButton>
-                    <ToggleButton value='expense'><TrendingDownIcon sx={{ mr: 0.5 }} />Expense</ToggleButton>
+                    <ToggleButton value='income'><TrendingUpIcon sx={{ mr: 0.5 }} />Receita</ToggleButton>
+                    <ToggleButton value='expense'><TrendingDownIcon sx={{ mr: 0.5 }} />Despesa</ToggleButton>
                 </ToggleButtonGroup>
             )}
 
@@ -195,10 +195,10 @@ export default function TransactionFields({
                     bgcolor: (theme) => alpha(theme.palette.text.primary, theme.palette.mode === 'dark' ? 0.04 : 0.03),
                 }}
             >
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                     <DatePicker
                         closeOnSelect
-                        label='Date'
+                        label='Data'
                         value={date}
                         onChange={(newValue) => onDateChange(newValue)}
                         slotProps={{
@@ -228,7 +228,7 @@ export default function TransactionFields({
                         fullWidth
                         value={category}
                         onChange={(_e: any, newValue: any) => { if (onCategoryChange) onCategoryChange(newValue); }}
-                        renderInput={(params) => <TextField onFocus={selectFocused} margin='none' {...params} label='Category' />}
+                        renderInput={(params) => <TextField onFocus={selectFocused} margin='none' {...params} label='Categoria' />}
                         renderOption={(props, option) => (
                             <li {...props} key={option.id}>
                                 <Box display='flex' justifyContent='space-between' width='100%' gap={1}>

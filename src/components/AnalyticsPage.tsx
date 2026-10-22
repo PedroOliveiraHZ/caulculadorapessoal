@@ -20,9 +20,9 @@ import {
 import { supabase } from '../lib/supabase';
 import { useEntitlement } from '../lib/checkout';
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 
 const COLORS = ['#4c809e', '#D6A058', '#6bbf8a', '#e07b7b', '#9b7fd4', '#e0a84c', '#5cc2c7', '#d4708f', '#8aad5e', '#c9884c'];
@@ -60,7 +60,7 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
     let cumulative = 0;
     const dayMap = new Map<string, number>();
     sortedTransactions.forEach(t => {
-        const day = dayjs(t.transactionDate).format('MMM D');
+        const day = dayjs(t.transactionDate).locale('pt-br').format('D MMM');
         cumulative += t.amount;
         dayMap.set(day, cumulative);
     });
@@ -88,7 +88,8 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
         const dow = dayjs(t.transactionDate).format('ddd');
         dayOfWeekMap.set(dow, (dayOfWeekMap.get(dow) || 0) + t.amount);
     });
-    const spendingByDow = dayOrder.map(d => ({ day: d, amount: Math.round((dayOfWeekMap.get(d) || 0) * 100) / 100 }));
+    const diasPt: Record<string, string> = { Sun: 'Dom', Mon: 'Seg', Tue: 'Ter', Wed: 'Qua', Thu: 'Qui', Fri: 'Sex', Sat: 'Sáb' };
+    const spendingByDow = dayOrder.map(d => ({ day: diasPt[d], amount: Math.round((dayOfWeekMap.get(d) || 0) * 100) / 100 }));
     const hasSpendingByDow = spendingByDow.some(d => d.amount > 0);
 
     // Average Transaction Size
@@ -110,7 +111,7 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
         weekMap.set(label, (weekMap.get(label) || 0) + 1);
     });
     const transactionFrequency = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5']
-        .map(w => ({ week: w, count: weekMap.get(w) || 0 }))
+        .map(w => ({ week: w.replace('Week', 'Semana'), count: weekMap.get(w) || 0 }))
         .filter((_, i, arr) => i < 4 || arr[4]?.count > 0); // only show week 5 if it has data
 
     return (
@@ -119,7 +120,7 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            Income Sources
+                            Fontes de Receita
                         </Typography>
                         <ResponsiveContainer width="100%" height={250}>
                             <PieChart>
@@ -150,7 +151,7 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            Expense Distribution
+                            Distribuição de Despesas
                         </Typography>
                         <ResponsiveContainer width="100%" height={250}>
                             <PieChart>
@@ -182,14 +183,14 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                 <>
                     <Grid size={12}>
                         <Typography variant='subtitle1' color='text.secondary' sx={{ fontWeight: 600, mt: 1 }}>
-                            Advanced
+                            Avançado
                         </Typography>
                     </Grid>
             {spendingByDay.length > 1 && (
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            Spending Over Time
+                            Gastos ao Longo do Tempo
                         </Typography>
                         <ResponsiveContainer width="100%" height={250}>
                             <AreaChart data={spendingByDay} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
@@ -201,9 +202,9 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                                 <XAxis dataKey="date" tick={{ fill: textColor, fontSize: 12 }} />
-                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `$${v}`} />
+                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `R$${v}`} />
                                 <Tooltip formatter={(val) => formatter.format(Number(val))} {...tooltipStyle} />
-                                <Area type="monotone" dataKey="amount" stroke="#e07b7b" fill="url(#spendGradient)" strokeWidth={2} name="Total Spent" />
+                                <Area type="monotone" dataKey="amount" stroke="#e07b7b" fill="url(#spendGradient)" strokeWidth={2} name="Total Gasto" />
                             </AreaChart>
                         </ResponsiveContainer>
                     </Paper>
@@ -215,15 +216,15 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            Spending by Day of Week
+                            Gastos por Dia da Semana
                         </Typography>
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={spendingByDow} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                                 <XAxis dataKey="day" tick={{ fill: textColor, fontSize: 12 }} />
-                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `$${v}`} />
+                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `R$${v}`} />
                                 <Tooltip formatter={(val) => formatter.format(Number(val))} {...tooltipStyle} />
-                                <Bar dataKey="amount" fill="#9b7fd4" radius={[4, 4, 0, 0]} name="Spent" />
+                                <Bar dataKey="amount" fill="#9b7fd4" radius={[4, 4, 0, 0]} name="Gasto" />
                             </BarChart>
                         </ResponsiveContainer>
                     </Paper>
@@ -235,24 +236,24 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            Transaction Stats
+                            Estatísticas de Transações
                         </Typography>
                         <Box display='flex' justifyContent='space-around' sx={{ mb: 2 }}>
                             <Box textAlign='center'>
                                 <Typography variant='h5' color='text.primary' sx={{ fontWeight: 600 }}>
                                     {formatter.format(avgTransactionSize)}
                                 </Typography>
-                                <Typography variant='caption' color='text.secondary'>Avg Transaction</Typography>
+                                <Typography variant='caption' color='text.secondary'>Transação Média</Typography>
                             </Box>
                             <Box textAlign='center'>
                                 <Typography variant='h5' color='text.primary' sx={{ fontWeight: 600 }}>
                                     {expenseTransactionCount}
                                 </Typography>
-                                <Typography variant='caption' color='text.secondary'>Total Transactions</Typography>
+                                <Typography variant='caption' color='text.secondary'>Total de Transações</Typography>
                             </Box>
                         </Box>
                         <Typography textAlign='center' color='text.secondary' variant='subtitle2' sx={{ fontWeight: '600', mb: 1 }}>
-                            Transactions by Week
+                            Transações por Semana
                         </Typography>
                         <ResponsiveContainer width="100%" height={150}>
                             <BarChart data={transactionFrequency} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
@@ -260,7 +261,7 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                                 <XAxis dataKey="week" tick={{ fill: textColor, fontSize: 12 }} />
                                 <YAxis tick={{ fill: textColor, fontSize: 12 }} allowDecimals={false} />
                                 <Tooltip {...tooltipStyle} />
-                                <Bar dataKey="count" fill="#5cc2c7" radius={[4, 4, 0, 0]} name="Transactions" />
+                                <Bar dataKey="count" fill="#5cc2c7" radius={[4, 4, 0, 0]} name="Transações" />
                             </BarChart>
                         </ResponsiveContainer>
                     </Paper>
@@ -272,15 +273,15 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            Top 5 Biggest Expenses
+                            Top 5 Maiores Despesas
                         </Typography>
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={top5Transactions} layout="vertical" margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
-                                <XAxis type="number" tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `$${v}`} />
+                                <XAxis type="number" tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `R$${v}`} />
                                 <YAxis type="category" dataKey="name" tick={{ fill: textColor, fontSize: 11 }} width={100} />
                                 <Tooltip formatter={(val) => formatter.format(Number(val))} {...tooltipStyle} />
-                                <Bar dataKey="amount" fill="#D6A058" radius={[0, 4, 4, 0]} name="Amount" />
+                                <Bar dataKey="amount" fill="#D6A058" radius={[0, 4, 4, 0]} name="Valor" />
                             </BarChart>
                         </ResponsiveContainer>
                     </Paper>
@@ -292,10 +293,10 @@ function ThisMonthTab({ hasPro }: { hasPro: boolean }) {
                     <Paper elevation={2} sx={{ borderRadius: 3, p: 3, textAlign: 'center' }}>
                         <LockIcon sx={{ fontSize: 36, color: 'text.disabled', mb: 0.5 }} />
                         <Typography variant='subtitle1' color='text.secondary' sx={{ fontWeight: 600 }}>
-                            Advanced Analytics
+                            Análises Avançadas
                         </Typography>
                         <Typography variant='body2' color='text.disabled'>
-                            Upgrade to Pro to unlock detailed spending insights, trends, and more.
+                            Assine o Pro para desbloquear análises detalhadas de gastos, tendências e mais.
                         </Typography>
                     </Paper>
                 </Grid>
@@ -342,10 +343,10 @@ function TrendsTab() {
             const currentDate = dayjs(`${currentBudget.month} 1, ${currentBudget.year}`);
             // We need: this month, last month, and 12 months ago (plus months in between for 3-month category trend)
             const monthsToFetch = [
-                { month: currentDate.format('MMMM'), year: currentDate.year() },
-                { month: currentDate.subtract(1, 'month').format('MMMM'), year: currentDate.subtract(1, 'month').year() },
-                { month: currentDate.subtract(2, 'month').format('MMMM'), year: currentDate.subtract(2, 'month').year() },
-                { month: currentDate.subtract(12, 'month').format('MMMM'), year: currentDate.subtract(12, 'month').year() },
+                { month: currentDate.locale('en').format('MMMM'), year: currentDate.year() },
+                { month: currentDate.subtract(1, 'month').locale('en').format('MMMM'), year: currentDate.subtract(1, 'month').year() },
+                { month: currentDate.subtract(2, 'month').locale('en').format('MMMM'), year: currentDate.subtract(2, 'month').year() },
+                { month: currentDate.subtract(12, 'month').locale('en').format('MMMM'), year: currentDate.subtract(12, 'month').year() },
             ];
 
             // Remove duplicates
@@ -416,7 +417,7 @@ function TrendsTab() {
                 (transactions || []).forEach((t: any) => {
                     if (t.transactionType === 'expense' && expenseCatIds.has(t.categoryID)) {
                         totalSpent += t.amount;
-                        const catName = idToName.get(t.categoryID) || 'Unknown';
+                        const catName = idToName.get(t.categoryID) || 'Desconhecido';
                         const current = categorySpending.get(catName) || 0;
                         categorySpending.set(catName, current + t.amount);
                     } else if (t.transactionType === 'income' && incomeCatIds.has(t.categoryID)) {
@@ -457,27 +458,27 @@ function TrendsTab() {
     if (loading) {
         return (
             <Box display='flex' justifyContent='center' py={4}>
-                <Typography color='text.secondary'>Loading trends...</Typography>
+                <Typography color='text.secondary'>Carregando tendências...</Typography>
             </Box>
         );
     }
 
     const currentDate = dayjs(`${currentBudget.month} 1, ${currentBudget.year}`);
-    const thisMonth = monthsData.find(m => m.month === currentDate.format('MMMM') && m.year === currentDate.year());
-    const lastMonth = monthsData.find(m => m.month === currentDate.subtract(1, 'month').format('MMMM') && m.year === currentDate.subtract(1, 'month').year());
-    const twoMonthsAgo = monthsData.find(m => m.month === currentDate.subtract(2, 'month').format('MMMM') && m.year === currentDate.subtract(2, 'month').year());
-    const oneYearAgo = monthsData.find(m => m.month === currentDate.subtract(12, 'month').format('MMMM') && m.year === currentDate.subtract(12, 'month').year());
+    const thisMonth = monthsData.find(m => m.month === currentDate.locale('en').format('MMMM') && m.year === currentDate.year());
+    const lastMonth = monthsData.find(m => m.month === currentDate.subtract(1, 'month').locale('en').format('MMMM') && m.year === currentDate.subtract(1, 'month').year());
+    const twoMonthsAgo = monthsData.find(m => m.month === currentDate.subtract(2, 'month').locale('en').format('MMMM') && m.year === currentDate.subtract(2, 'month').year());
+    const oneYearAgo = monthsData.find(m => m.month === currentDate.subtract(12, 'month').locale('en').format('MMMM') && m.year === currentDate.subtract(12, 'month').year());
 
     // Month vs Last Month comparison chart
     const vsLastMonthData = [
-        { name: currentDate.subtract(1, 'month').format('MMM YYYY'), Income: lastMonth?.totalIncome || 0, Expenses: lastMonth?.totalSpent || 0 },
-        { name: currentDate.format('MMM YYYY'), Income: thisMonth?.totalIncome || 0, Expenses: thisMonth?.totalSpent || 0 },
+        { name: currentDate.subtract(1, 'month').locale('pt-br').format('MMM YYYY'), Income: lastMonth?.totalIncome || 0, Expenses: lastMonth?.totalSpent || 0 },
+        { name: currentDate.locale('pt-br').format('MMM YYYY'), Income: thisMonth?.totalIncome || 0, Expenses: thisMonth?.totalSpent || 0 },
     ];
 
     // Month vs 1 Year Ago comparison chart
     const vsYearAgoData = [
-        { name: currentDate.subtract(12, 'month').format('MMM YYYY'), Income: oneYearAgo?.totalIncome || 0, Expenses: oneYearAgo?.totalSpent || 0 },
-        { name: currentDate.format('MMM YYYY'), Income: thisMonth?.totalIncome || 0, Expenses: thisMonth?.totalSpent || 0 },
+        { name: currentDate.subtract(12, 'month').locale('pt-br').format('MMM YYYY'), Income: oneYearAgo?.totalIncome || 0, Expenses: oneYearAgo?.totalSpent || 0 },
+        { name: currentDate.locale('pt-br').format('MMM YYYY'), Income: thisMonth?.totalIncome || 0, Expenses: thisMonth?.totalSpent || 0 },
     ];
 
     // Category spending over past 3 months (keyed by category name)
@@ -487,9 +488,9 @@ function TrendsTab() {
     });
 
     const categoryTrendData = [
-        { month: currentDate.subtract(2, 'month').format('MMM'), ...Object.fromEntries([...allCategoryNames].map(name => [name, twoMonthsAgo?.categorySpending.get(name) || 0])) },
-        { month: currentDate.subtract(1, 'month').format('MMM'), ...Object.fromEntries([...allCategoryNames].map(name => [name, lastMonth?.categorySpending.get(name) || 0])) },
-        { month: currentDate.format('MMM'), ...Object.fromEntries([...allCategoryNames].map(name => [name, thisMonth?.categorySpending.get(name) || 0])) },
+        { month: currentDate.subtract(2, 'month').locale('pt-br').format('MMM'), ...Object.fromEntries([...allCategoryNames].map(name => [name, twoMonthsAgo?.categorySpending.get(name) || 0])) },
+        { month: currentDate.subtract(1, 'month').locale('pt-br').format('MMM'), ...Object.fromEntries([...allCategoryNames].map(name => [name, lastMonth?.categorySpending.get(name) || 0])) },
+        { month: currentDate.locale('pt-br').format('MMM'), ...Object.fromEntries([...allCategoryNames].map(name => [name, thisMonth?.categorySpending.get(name) || 0])) },
     ];
 
     // Generate insight text for categories
@@ -521,7 +522,7 @@ function TrendsTab() {
     if (!hasVsLastMonth && !hasVsYearAgo && !hasCategoryTrend) {
         return (
             <Box display='flex' justifyContent='center' py={4}>
-                <Typography color='text.secondary'>Not enough historical data to show trends yet.</Typography>
+                <Typography color='text.secondary'>Ainda não há histórico suficiente para mostrar tendências.</Typography>
             </Box>
         );
     }
@@ -533,17 +534,17 @@ function TrendsTab() {
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            This Month vs Last Month
+                            Este Mês vs Mês Passado
                         </Typography>
                         <ResponsiveContainer width="100%" height={220}>
                             <BarChart data={vsLastMonthData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                                 <XAxis dataKey="name" tick={{ fill: textColor, fontSize: 12 }} />
-                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `$${v}`} />
+                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `R$${v}`} />
                                 <Tooltip formatter={(val) => formatter.format(Number(val))} {...tooltipStyle} />
                                 <Legend />
-                                <Bar dataKey="Income" fill="#6bbf8a" radius={[4, 4, 0, 0]} />
-                                <Bar dataKey="Expenses" fill="#e07b7b" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="Income" name="Receitas" fill="#6bbf8a" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="Expenses" name="Despesas" fill="#e07b7b" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                         {lastMonth && thisMonth && lastMonth.totalSpent > 0 && (
@@ -575,17 +576,17 @@ function TrendsTab() {
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            This Month vs 1 Year Ago
+                            Este Mês vs 1 Ano Atrás
                         </Typography>
                         <ResponsiveContainer width="100%" height={220}>
                             <BarChart data={vsYearAgoData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                                 <XAxis dataKey="name" tick={{ fill: textColor, fontSize: 12 }} />
-                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `$${v}`} />
+                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `R$${v}`} />
                                 <Tooltip formatter={(val) => formatter.format(Number(val))} {...tooltipStyle} />
                                 <Legend />
-                                <Bar dataKey="Income" fill="#6bbf8a" radius={[4, 4, 0, 0]} />
-                                <Bar dataKey="Expenses" fill="#e07b7b" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="Income" name="Receitas" fill="#6bbf8a" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="Expenses" name="Despesas" fill="#e07b7b" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                         {oneYearAgo && thisMonth && oneYearAgo.totalSpent > 0 && (
@@ -617,13 +618,13 @@ function TrendsTab() {
                 <Grid size={{ xs: 12 }}>
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                         <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                            Category Spending (Past 3 Months)
+                            Gastos por Categoria (Últimos 3 Meses)
                         </Typography>
                         <ResponsiveContainer width="100%" height={280}>
                             <LineChart data={categoryTrendData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
                                 <XAxis dataKey="month" tick={{ fill: textColor, fontSize: 12 }} />
-                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `$${v}`} />
+                                <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `R$${v}`} />
                                 <Tooltip formatter={(val) => formatter.format(Number(val))} {...tooltipStyle} />
                                 <Legend />
                                 {topCategories.map((cat, i) => (
@@ -652,7 +653,7 @@ function TrendsTab() {
                                             : <TrendingDownIcon fontSize='small' color='success' />
                                         }
                                         <Typography variant='body2' color='text.secondary'>
-                                            You spent <strong>{formatter.format(Math.abs(insight.change))} {insight.direction === 'up' ? 'more' : 'less'}</strong> on <strong>{insight.name}</strong> this month than last month
+                                            Você gastou <strong>{formatter.format(Math.abs(insight.change))} {insight.direction === 'up' ? 'a mais' : 'a menos'}</strong> em <strong>{insight.name}</strong> este mês do que no mês passado
                                         </Typography>
                                     </Box>
                                 ))}
@@ -686,13 +687,13 @@ function TrendsTab() {
                     <Grid size={{ xs: 12 }}>
                         <Paper elevation={4} sx={{ borderRadius: 3, p: 2 }}>
                             <Typography textAlign='center' color='text.secondary' variant='h6' sx={{ fontWeight: '600', mb: 1 }}>
-                                Spending Pace Comparison
+                                Comparativo de Ritmo de Gastos
                             </Typography>
                             <ResponsiveContainer width="100%" height={280}>
                                 <LineChart data={paceData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
                                     <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
-                                    <XAxis dataKey="day" tick={{ fill: textColor, fontSize: 12 }} label={{ value: 'Day of Month', position: 'insideBottom', offset: -2, fill: textColor, fontSize: 11 }} />
-                                    <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `$${v}`} />
+                                    <XAxis dataKey="day" tick={{ fill: textColor, fontSize: 12 }} label={{ value: 'Dia do Mês', position: 'insideBottom', offset: -2, fill: textColor, fontSize: 11 }} />
+                                    <YAxis tick={{ fill: textColor, fontSize: 12 }} tickFormatter={(v) => `R$${v}`} />
                                     <Tooltip formatter={(val) => formatter.format(Number(val))} {...tooltipStyle} />
                                     <Legend />
                                     {paceMonths.map((m, i) => (
@@ -730,8 +731,8 @@ export default function AnalyticsPage() {
                 onChange={(_, v) => setTab(v)}
                 sx={{ mb: 2 }}
             >
-                <Tab label="This Month" />
-                <Tab label="Trends" icon={!hasPro ? <LockIcon fontSize="small" /> : undefined} iconPosition="end" />
+                <Tab label="Este Mês" />
+                <Tab label="Tendências" icon={!hasPro ? <LockIcon fontSize="small" /> : undefined} iconPosition="end" />
             </Tabs>
 
             {tab === 0 && <ThisMonthTab hasPro={hasPro} />}
@@ -742,10 +743,10 @@ export default function AnalyticsPage() {
                     <Paper elevation={4} sx={{ borderRadius: 3, p: 4, maxWidth: 400, textAlign: 'center' }}>
                         <LockIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 1 }} />
                         <Typography variant="h6" color="text.secondary" gutterBottom>
-                            Trends is a Pro feature
+                            Tendências é um recurso Pro
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Upgrade to Pro to unlock historical spending trends, month-over-month comparisons, and category insights.
+                            Assine o Pro para desbloquear tendências históricas, comparativos mês a mês e insights por categoria.
                         </Typography>
                         <Chip label="Pro" size="small" variant="outlined" sx={{ mt: 2 }} />
                     </Paper>

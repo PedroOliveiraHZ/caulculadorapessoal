@@ -41,15 +41,15 @@ export default function ExportToCSV() {
 
     const verifyInputs = () => {
         if (fromMonth === null) {
-            setErrorText('Please enter a from month');
+            setErrorText('Informe o mês de origem');
             return false;
         }
         if (toMonth === null) {
-            setErrorText('Please enter a to month');
+            setErrorText('Informe o mês de destino');
             return false;
         }
         if (fromMonth.isAfter(toMonth)) {
-            setErrorText('Please enter in the correct order');
+            setErrorText('Informe os meses na ordem correta');
             return false;
         }
         return true;
@@ -67,7 +67,7 @@ export default function ExportToCSV() {
             const start = dayjs(fromMonth);
             const end = dayjs(toMonth);
             for (let m = dayjs(start); m.isBefore(end) || m.isSame(end, 'month'); m = m.add(1, 'month')) {
-                months.push({ year: m.format('YYYY'), month: m.format('MMMM') });
+                months.push({ year: m.format('YYYY'), month: m.locale('en').format('MMMM') });
             }
 
             // Fetch all sections sequentially (each month is a separate query)
@@ -80,7 +80,7 @@ export default function ExportToCSV() {
             }
 
             if (allSections.length === 0) {
-                setErrorText('No data found for the selected months');
+                setErrorText('Nenhum dado nos meses selecionados');
                 setLoadingOpen(false);
                 return;
             }
@@ -88,7 +88,7 @@ export default function ExportToCSV() {
             // Fetch all categories for those sections
             const allCategories = await supaCategories(allSections.map(s => s.recordID));
             if (!allCategories || allCategories.length === 0) {
-                setErrorText('No categories found');
+                setErrorText('Nenhuma categoria encontrada');
                 setLoadingOpen(false);
                 return;
             }
@@ -119,11 +119,11 @@ export default function ExportToCSV() {
             setAllExportData(exportRows);
             setGenerated(true);
             setSnackSev('success');
-            setSnackText('Export generated!');
+            setSnackText('Exportação gerada!');
             setSnackOpen(true);
         } catch (err) {
             console.error('Export error:', err);
-            setErrorText('Something went wrong generating the export');
+            setErrorText('Algo deu errado ao gerar a exportação');
         } finally {
             setLoadingOpen(false);
         }
@@ -145,16 +145,16 @@ export default function ExportToCSV() {
         >
             <Box sx={{ bgcolor: 'background.paper', height: '100%' }} component='form' onSubmit={handleSubmit}>
                 <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    Export Data to CSV <IconButton onClick={() => setExportCSV(false)}><CloseIcon /></IconButton>
+                    Exportar Dados para CSV <IconButton onClick={() => setExportCSV(false)}><CloseIcon /></IconButton>
                 </DialogTitle>
                 <DialogContent dividers>
                     <Grid container spacing={2}>
-                        <Typography>Select the start and end months of the data you want</Typography>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <Typography>Selecione o mês inicial e final dos dados</Typography>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                             <Grid size={12}>
                                 <DatePicker
                                     views={['year', 'month']}
-                                    label="Start Month"
+                                    label="Mês Inicial"
                                     value={fromMonth}
                                     onChange={(newValue) => setFromMonth(newValue)}
                                     slotProps={{
@@ -166,7 +166,7 @@ export default function ExportToCSV() {
                             <Grid size={12}>
                                 <DatePicker
                                     views={['year', 'month']}
-                                    label="End Month"
+                                    label="Mês Final"
                                     value={toMonth}
                                     onChange={(newValue) => setToMonth(newValue)}
                                     slotProps={{
@@ -188,10 +188,10 @@ export default function ExportToCSV() {
                             className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
                             target="_blank"
                         >
-                            Download Export
+                            Baixar Exportação
                         </CSVLink>
                         :
-                        <Button fullWidth startIcon={<DownloadIcon />} type='submit' variant='contained'>Export</Button>
+                        <Button fullWidth startIcon={<DownloadIcon />} type='submit' variant='contained'>Exportar</Button>
                     }
                 </DialogActions>
             </Box>

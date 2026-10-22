@@ -39,7 +39,7 @@ export default function AddSection() {
     const bigger = useMediaQuery(theme.breakpoints.up('sm'));
     const verifyInputs = () => {
         if (sectionName === '' || sectionName === null) {
-            setErrorText('Please enter section name.')
+            setErrorText('Informe o nome da seção.')
             return false
         }
         return true
@@ -47,7 +47,7 @@ export default function AddSection() {
     async function handleSubmit(event: any) {
         event.preventDefault();
         if (currentBudget.budgetID === undefined) {
-            setErrorText('You need to create a budget first! Go to the settings page, click \'Select Budget\'')
+            setErrorText('Crie um orçamento primeiro! Vá em Ajustes e clique em \'Trocar Orçamento\'')
             return
         }
         setErrorText('')
@@ -75,11 +75,11 @@ export default function AddSection() {
                 setAddNewSection(false)
                 setLoadingOpen(false)
                 setSnackSev('success')
-                setSnackText('Section Added!')
+                setSnackText('Seção adicionada!')
                 setSnackOpen(true)
             } catch (err: any) {
                 setLoadingOpen(false)
-                setErrorText(err.message || 'Network error — try again when online')
+                setErrorText(err.message || 'Erro de rede — tente novamente quando estiver online')
             }
         }
     }
@@ -99,7 +99,7 @@ export default function AddSection() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }} component='form' onSubmit={handleSubmit}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        New Section <IconButton onClick={() => setAddNewSection(false)}><CloseIcon /></IconButton>
+                        Nova Seção <IconButton onClick={() => setAddNewSection(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Box sx={{ mb: 1 }}><OfflineAlert /></Box>
@@ -113,7 +113,7 @@ export default function AddSection() {
                     </DialogContent>
                     {errorText && <Box sx={{ mx: 2, mt: 1 }}><Typography color='error' variant='body2'>{errorText}</Typography></Box>}
                     <DialogActions sx={{ position: 'sticky', bottom: 0, bgcolor: 'background.paper', borderTop: '1px solid', borderColor: 'divider', px: 2, py: 1.5 }}>
-                        <Button fullWidth startIcon={<AddIcon />} type='submit' variant='contained' disabled={offline}>Add Section</Button>
+                        <Button fullWidth startIcon={<AddIcon />} type='submit' variant='contained' disabled={offline}>Nova Seção</Button>
                     </DialogActions>
                 </Box>
             </Dialog>

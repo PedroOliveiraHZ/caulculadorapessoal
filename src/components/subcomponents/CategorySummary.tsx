@@ -10,9 +10,9 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 
 interface CategorySummaryProps {
@@ -67,14 +67,14 @@ export default function CategorySummary({
         insights.push({
             key: 'over',
             icon: <WarningAmberIcon fontSize='small' />,
-            label: `Over by ${formatter.format(Math.abs(remaining))}`,
+            label: `Excedeu ${formatter.format(Math.abs(remaining))}`,
             color: 'error',
         });
     } else {
         insights.push({
             key: 'remaining',
             icon: <CheckCircleOutlineIcon fontSize='small' />,
-            label: `${formatter.format(remaining)} ${isIncome ? 'left to earn' : 'left'}`,
+            label: `${formatter.format(remaining)} ${isIncome ? 'falta receber' : 'restante'}`,
             color: 'success',
         });
     }
@@ -83,7 +83,7 @@ export default function CategorySummary({
         insights.push({
             key: 'count',
             icon: <ReceiptLongIcon fontSize='small' />,
-            label: `${txCount} ${txCount === 1 ? 'transaction' : 'transactions'}${largest > 0 ? ` · largest ${formatter.format(largest)}` : ''}`,
+            label: `${txCount} ${txCount === 1 ? 'transação' : 'transações'}${largest > 0 ? ` · largest ${formatter.format(largest)}` : ''}`,
             color: 'default',
         });
     }
@@ -113,10 +113,10 @@ export default function CategorySummary({
         <Paper elevation={1} sx={{ borderRadius: 3, p: dense ? 1.25 : 1.75 }}>
             {/* Stat tiles */}
             <Stack direction='row' spacing={1} sx={{ mb: 1 }}>
-                <StatTile label={isIncome ? 'Earned' : 'Spent'} value={formatter.format(usedClamped)} />
-                <StatTile label='Planned' value={formatter.format(planned)} />
+                <StatTile label={isIncome ? 'Recebido' : 'Gasto'} value={formatter.format(usedClamped)} />
+                <StatTile label='Planejado' value={formatter.format(planned)} />
                 <StatTile
-                    label={isIncome ? '% earned' : '% used'}
+                    label={isIncome ? '% recebido' : '% usado'}
                     value={`${Math.round(Math.max(pct, 0))}%`}
                     valueColor={over ? theme.palette.error.main : undefined}
                 />

@@ -64,17 +64,17 @@ export default function SupabaseConfigPage() {
 
         // Validate custom inputs
         if (!url.trim()) {
-            setError('Supabase URL is required.');
+            setError('A URL do Supabase é obrigatória.');
             return;
         }
         if (!apiKey.trim()) {
-            setError('Supabase API Key is required.');
+            setError('A chave da API do Supabase é obrigatória.');
             return;
         }
         try {
             new URL(url.trim());
         } catch {
-            setError('Please enter a valid URL.');
+            setError('Informe uma URL válida.');
             return;
         }
 
@@ -108,7 +108,7 @@ export default function SupabaseConfigPage() {
                         <Grid size={12}>
                             <Stack direction='row' alignItems='center' spacing={1}>
                                 <IconButton
-                                    aria-label="back to login"
+                                    aria-label="voltar ao login"
                                     onClick={() => navigate('/login')}
                                     size="small"
                                 >
@@ -122,21 +122,21 @@ export default function SupabaseConfigPage() {
                                     loading="lazy"
                                 />
                                 <Typography variant="h6">
-                                    Backend Configuration
+                                    Configuração do Backend
                                 </Typography>
                             </Stack>
                         </Grid>
 
                         <Grid size={12}>
                             <Typography variant='body2' color='textSecondary'>
-                                Choose the production backend or connect to your own Supabase instance.
+                                Use o backend padrão ou conecte ao seu próprio Supabase.
                             </Typography>
                         </Grid>
 
                         {isSelfHostedConfig() && (
                             <Grid size={12}>
                                 <Alert severity="info" variant="outlined">
-                                    This instance has a pre-configured backend set by the host. You can still override it per-browser below.
+                                    Esta instância já tem um backend configurado pelo host. Você ainda pode sobrescrevê-lo neste navegador abaixo.
                                 </Alert>
                             </Grid>
                         )}
@@ -156,12 +156,12 @@ export default function SupabaseConfigPage() {
                                     <FormControlLabel
                                         value="production"
                                         control={<Radio />}
-                                        label="Production (default)"
+                                        label="Produção (padrão)"
                                     />
                                     <FormControlLabel
                                         value="custom"
                                         control={<Radio />}
-                                        label="Custom Supabase instance"
+                                        label="Supabase próprio"
                                     />
                                 </RadioGroup>
                             </FormControl>
@@ -192,9 +192,9 @@ export default function SupabaseConfigPage() {
                                 <Grid size={12}>
                                     <TextField
                                         fullWidth
-                                        label="VAPID Public Key (optional)"
+                                        label="Chave pública VAPID (opcional)"
                                         placeholder="BPe7K...base64url-encoded..."
-                                        helperText="Required for push notifications. Found in your server's .env file."
+                                        helperText="Necessária para notificações push. Fica no arquivo .env do servidor."
                                         value={vapidKey}
                                         onChange={(e) => { setVapidKey(e.target.value); setSaved(false); }}
                                         multiline
@@ -213,7 +213,7 @@ export default function SupabaseConfigPage() {
                         {saved && (
                             <Grid size={12}>
                                 <Alert severity="success">
-                                    Configuration saved. Return to login to sign in.
+                                    Configuração salva. Volte ao login para entrar.
                                 </Alert>
                             </Grid>
                         )}
@@ -225,7 +225,7 @@ export default function SupabaseConfigPage() {
                                 onClick={handleSave}
                                 sx={{ mt: 1 }}
                             >
-                                Save Configuration
+                                Salvar Configuração
                             </Button>
                         </Grid>
 
@@ -235,7 +235,7 @@ export default function SupabaseConfigPage() {
                                 size='small'
                                 onClick={() => navigate('/login')}
                             >
-                                Back to Login
+                                Voltar ao Login
                             </Button>
                         </Grid>
                     </Grid>

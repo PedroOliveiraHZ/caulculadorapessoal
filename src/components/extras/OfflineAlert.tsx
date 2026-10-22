@@ -10,7 +10,7 @@ export default function OfflineAlert() {
     if (isOnline) return null;
     return (
         <Alert severity="warning" variant="outlined" sx={{ py: 0, mb: 1 }}>
-            You're offline — this action is unavailable.
+            Você está offline — esta ação não está disponível.
         </Alert>
     );
 }
@@ -25,8 +25,8 @@ export function OfflineBanner() {
     if (isOnline) return null;
     return (
         <Alert severity="warning" variant="filled" sx={{ borderRadius: 0, py: 0 }}>
-            You're offline — viewing cached data. Only "Add Transaction" is available.
-            {pendingCount > 0 && ` (${pendingCount} pending sync)`}
+            Você está offline — exibindo dados em cache. Apenas "Nova Transação" está disponível.
+            {pendingCount > 0 && ` (${pendingCount} pendente(s) de sincronizar)`}
         </Alert>
     );
 }

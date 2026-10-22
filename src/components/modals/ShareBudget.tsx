@@ -87,7 +87,7 @@ export default function ShareBudget() {
             } catch (err) {
                 console.error('QR Scanner error:', err);
                 setScanning(false);
-                setErrorText('Could not access camera');
+                setErrorText('Não foi possível acessar a câmera');
             }
         }, 100);
     };
@@ -181,7 +181,7 @@ export default function ShareBudget() {
         }
         setSharedUsers(prev => prev.filter(s => s.recordID !== shareRecordID));
         setSnackSev('success');
-        setSnackText('User removed from shared budget');
+        setSnackText('Usuário removido do orçamento compartilhado');
         setSnackOpen(true);
     };
 
@@ -189,7 +189,7 @@ export default function ShareBudget() {
         const targetID = userID.trim();
         if (!targetID) return;
         if (targetID === user.recordID) {
-            setErrorText("You can't share a budget with yourself");
+            setErrorText("Você não pode compartilhar um orçamento consigo mesmo");
             return;
         }
         setShareLoading(true);
@@ -209,7 +209,7 @@ export default function ShareBudget() {
             return;
         }
         setSnackSev('success');
-        setSnackText('Budget Shared Successfully');
+        setSnackText('Orçamento compartilhado!');
         setSnackOpen(true);
         setSearchQuery('');
         setSearchResults([]);
@@ -243,13 +243,13 @@ export default function ShareBudget() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        Share Budget<IconButton onClick={() => setOpen(false)}><CloseIcon /></IconButton>
+                        Compartilhar Orçamento<IconButton onClick={() => setOpen(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Grid container spacing={2}>
                             <OfflineAlert />
                             <Grid size={12}>
-                                <Alert severity="warning">Warning!! Sharing your budget allows the other user to create, view, edit and delete categories, sections, and transactions. You can remove the sharing from this budget in the future, but you cannot undo their actions.</Alert>
+                                <Alert severity="warning">Atenção!! Compartilhar o orçamento permite que o outro usuário crie, veja, edite e exclua categorias, seções e transações. Você pode remover o compartilhamento depois, mas não pode desfazer as ações dele.</Alert>
                             </Grid>
 
                             {/* QR Scanner */}
@@ -258,7 +258,7 @@ export default function ShareBudget() {
                                     <Box>
                                         <div id={scannerContainerId} style={{ width: '100%' }} />
                                         <Button fullWidth size='small' color='error' onClick={stopScanner} sx={{ mt: 1 }}>
-                                            Stop Scanner
+                                            Parar Leitor
                                         </Button>
                                     </Box>
                                 ) : (
@@ -268,7 +268,7 @@ export default function ShareBudget() {
                                         startIcon={<QrCodeScannerIcon />}
                                         onClick={startScanner}
                                     >
-                                        Scan QR Code
+                                        Ler QR Code
                                     </Button>
                                 )}
                             </Grid>
@@ -278,7 +278,7 @@ export default function ShareBudget() {
                                 <TextField
                                     fullWidth
                                     size="small"
-                                    placeholder="Search by name or email"
+                                    placeholder="Buscar por nome ou e-mail"
                                     value={searchQuery}
                                     onChange={(e) => handleSearchUsers(e.target.value)}
                                     slotProps={{
@@ -301,7 +301,7 @@ export default function ShareBudget() {
                                 return (
                                     <Grid size={12}>
                                         <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: 'block' }}>
-                                            Recently shared with
+                                            Compartilhado recentemente com
                                         </Typography>
                                         <List dense sx={{ maxHeight: 200, overflow: 'auto' }}>
                                             {filtered.map((u) => (
@@ -317,7 +317,7 @@ export default function ShareBudget() {
                                                         />
                                                     </ListItemAvatar>
                                                     <ListItemText
-                                                        primary={u.fullName || 'Unnamed'}
+                                                        primary={u.fullName || 'Sem nome'}
                                                         secondary={u.email}
                                                     />
                                                 </ListItemButton>
@@ -344,7 +344,7 @@ export default function ShareBudget() {
                                                     />
                                                 </ListItemAvatar>
                                                 <ListItemText
-                                                    primary={u.fullName || 'Unnamed'}
+                                                    primary={u.fullName || 'Sem nome'}
                                                     secondary={u.email}
                                                 />
                                             </ListItemButton>
@@ -363,7 +363,7 @@ export default function ShareBudget() {
                                 <Grid size={12}>
                                     <Box sx={{ p: 2, borderRadius: 2, bgcolor: 'action.hover' }}>
                                         <Typography variant="body2" sx={{ mb: 1.5 }}>
-                                            Share this budget with <strong>{pendingShareUser.fullName || pendingShareUser.email}</strong>?
+                                            Compartilhar este orçamento com <strong>{pendingShareUser.fullName || pendingShareUser.email}</strong>?
                                         </Typography>
                                         <Stack direction="row" spacing={1}>
                                             <Button
@@ -374,13 +374,13 @@ export default function ShareBudget() {
                                                 }}
                                                 disabled={shareLoading}
                                             >
-                                                {shareLoading ? <CircularProgress size={16} /> : 'Confirm'}
+                                                {shareLoading ? <CircularProgress size={16} /> : 'Confirmar'}
                                             </Button>
                                             <Button
                                                 size="small"
                                                 onClick={() => setPendingShareUser(null)}
                                             >
-                                                Cancel
+                                                Cancelar
                                             </Button>
                                         </Stack>
                                     </Box>
@@ -391,7 +391,7 @@ export default function ShareBudget() {
                             <Grid size={12}>
                                 <Divider sx={{ my: 1 }} />
                                 <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-                                    Currently shared with
+                                    Compartilhado atualmente com
                                 </Typography>
                                 {loadingShared ? (
                                     <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
@@ -399,7 +399,7 @@ export default function ShareBudget() {
                                     </Box>
                                 ) : sharedUsers.length === 0 ? (
                                     <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
-                                        This budget is not shared with anyone yet.
+                                        Este orçamento ainda não está compartilhado.
                                     </Typography>
                                 ) : (
                                     <List dense disablePadding>
@@ -409,7 +409,7 @@ export default function ShareBudget() {
                                                 secondaryAction={
                                                     <IconButton
                                                         edge="end"
-                                                        aria-label="stop sharing"
+                                                        aria-label="parar de compartilhar"
                                                         color="error"
                                                         onClick={() => handleUnshare(sharedUser.recordID)}
                                                     >
@@ -424,7 +424,7 @@ export default function ShareBudget() {
                                                     />
                                                 </ListItemAvatar>
                                                 <ListItemText
-                                                    primary={sharedUser.fullName || 'Unknown User'}
+                                                    primary={sharedUser.fullName || 'Usuário desconhecido'}
                                                     secondary={sharedUser.email || ''}
                                                 />
                                             </ListItem>
@@ -436,7 +436,7 @@ export default function ShareBudget() {
                     </DialogContent>
                     <Box sx={{ mx: 1, mt: 0.5 }}><Typography color='error'>{errorText}</Typography></Box>
                     <DialogActions>
-                        <Button fullWidth onClick={() => setOpen(false)} variant='outlined'>Done</Button>
+                        <Button fullWidth onClick={() => setOpen(false)} variant='outlined'>Concluir</Button>
                     </DialogActions>
                 </Box>
             </Dialog>

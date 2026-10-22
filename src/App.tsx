@@ -324,13 +324,13 @@ export default function App() {
         </Box>
         {matches ? (
           <Fab color="secondary" variant='extended' sx={fabStyle} onClick={() => setAddNewTransaction(true)}>
-            <AddIcon /> Add Transaction
+            <AddIcon /> Nova Transação
           </Fab>
         ) : (
           <Fab
             color='secondary'
             size="medium"
-            aria-label="Add transaction"
+            aria-label="Nova transação"
             sx={{
               position: 'fixed',
               left: '50%',
@@ -354,7 +354,7 @@ export default function App() {
         <Snackbar open={addToHomePU} autoHideDuration={2000} onClose={addToHomeClose} sx={{ mb: 8 }}>
           {/*@ts-ignore*/}
           <Alert onClose={addToHomeClose} severity="info" sx={{ width: '100%' }}>
-            "Install this webapp"
+            "Instale este app"
           </Alert>
         </Snackbar>
         <AddBudget />

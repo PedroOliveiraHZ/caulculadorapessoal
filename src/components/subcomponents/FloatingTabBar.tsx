@@ -6,6 +6,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PaidIcon from '@mui/icons-material/Paid';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import SettingsIcon from '@mui/icons-material/Settings';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
 type TabDef = {
     label: string;
@@ -31,9 +32,10 @@ export default function FloatingTabBar({ unCategorized = 0 }: FloatingTabBarProp
 
     const tabs: TabDef[] = React.useMemo(
         () => [
-            { label: 'Budget', to: '/budget', match: /^\/budget/, icon: <DashboardIcon sx={{ fontSize: 22 }} /> },
+            { label: 'Orçamento', to: '/budget', match: /^\/budget/, icon: <DashboardIcon sx={{ fontSize: 22 }} /> },
+            { label: 'Meta', to: '/meta', match: /^\/meta/, icon: <ApartmentIcon sx={{ fontSize: 22 }} /> },
             {
-                label: 'Txns',
+                label: 'Transações',
                 to: '/transactions',
                 match: /^\/transactions/,
                 icon: (
@@ -42,8 +44,8 @@ export default function FloatingTabBar({ unCategorized = 0 }: FloatingTabBarProp
                     </Badge>
                 ),
             },
-            { label: 'Analytics', to: '/analytics', match: /^\/analytics/, icon: <AssessmentIcon sx={{ fontSize: 22 }} /> },
-            { label: 'Settings', to: '/settings', match: /^\/settings/, icon: <SettingsIcon sx={{ fontSize: 22 }} /> },
+            { label: 'Análises', to: '/analytics', match: /^\/analytics/, icon: <AssessmentIcon sx={{ fontSize: 22 }} /> },
+            { label: 'Ajustes', to: '/settings', match: /^\/settings/, icon: <SettingsIcon sx={{ fontSize: 22 }} /> },
         ],
         [unCategorized],
     );

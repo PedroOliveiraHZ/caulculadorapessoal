@@ -42,7 +42,7 @@ export default function AddCategory() {
     const bigger = useMediaQuery(theme.breakpoints.up('sm'));
     const verifyInputs = () => {
         if (categoryName === '' || categoryName === null) {
-            setErrorText('Please enter a category name')
+            setErrorText('Informe o nome da categoria')
             return false
         }
         //@ts-ignore
@@ -78,11 +78,11 @@ export default function AddCategory() {
                 setAddNewCategory(false)
                 setLoadingOpen(false)
                 setSnackSev('success')
-                setSnackText('Category Added!')
+                setSnackText('Categoria adicionada!')
                 setSnackOpen(true)
             } catch (err: any) {
                 setLoadingOpen(false)
-                setErrorText(err.message || 'Network error — try again when online')
+                setErrorText(err.message || 'Erro de rede — tente novamente quando estiver online')
             }
         }
     }
@@ -107,12 +107,12 @@ export default function AddCategory() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }} component='form' onSubmit={handleSubmit}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        New Category <IconButton onClick={() => setAddNewCategory(false)}><CloseIcon /></IconButton>
+                        Nova Categoria <IconButton onClick={() => setAddNewCategory(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Grid container spacing={2}>
                             <OfflineAlert />
-                            <Typography>Adding to: {currentSectionName}</Typography>
+                            <Typography>Adicionando em: {currentSectionName}</Typography>
                             <Grid size={12}>
                                 <TextField
                                     autoFocus
@@ -120,7 +120,7 @@ export default function AddCategory() {
                                     value={categoryName}
                                     onChange={(event: any) => setCategoryName(event.target.value)}
                                     type="text"
-                                    label="Category Name"
+                                    label="Nome da Categoria"
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -132,21 +132,21 @@ export default function AddCategory() {
                                     type="number"
                                     slotProps={{
                                         input: {
-                                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                            startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                                         },
                                         htmlInput: {
                                             step: 'any',
                                         },
                                     }}
-                                    placeholder='Budget Amount'
-                                    label="Budget Amount"
+                                    placeholder='Valor Orçado'
+                                    label="Valor Orçado"
                                 />
                             </Grid>
                         </Grid>
                     </DialogContent>
                     <Box sx={{ mx: 1, mt: 0.5 }}><Typography color='error'>{errorText}</Typography></Box>
                     <DialogActions>
-                        <Button fullWidth startIcon={<AddIcon />} variant='contained' type='submit' disabled={offline}>Add Category</Button>
+                        <Button fullWidth startIcon={<AddIcon />} variant='contained' type='submit' disabled={offline}>Nova Categoria</Button>
                     </DialogActions>
                 </Box>
             </Dialog>

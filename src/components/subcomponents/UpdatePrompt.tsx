@@ -21,12 +21,12 @@ export default function UpdatePrompt({ open, onUpdate, onDismiss }: UpdatePrompt
                 variant="filled"
                 action={
                     <>
-                        <Button color="inherit" size="small" onClick={onDismiss}>Later</Button>
-                        <Button color="inherit" size="small" onClick={onUpdate} sx={{ fontWeight: 'bold' }}>Update</Button>
+                        <Button color="inherit" size="small" onClick={onDismiss}>Depois</Button>
+                        <Button color="inherit" size="small" onClick={onUpdate} sx={{ fontWeight: 'bold' }}>Atualizar</Button>
                     </>
                 }
             >
-                A new version is available
+                Nova versão disponível
             </Alert>
         </Snackbar>
     );

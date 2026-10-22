@@ -132,7 +132,7 @@ export async function subscribeToPush(): Promise<boolean> {
                 applicationServerKey: urlBase64ToUint8Array(vapidKey),
             }),
             new Promise<never>((_, reject) =>
-                setTimeout(() => reject(new Error('Push subscription timed out — your browser may not support push notifications')), 10000)
+                setTimeout(() => reject(new Error('Tempo esgotado — seu navegador pode não suportar notificações push')), 10000)
             ),
         ]);
 

@@ -48,9 +48,9 @@ import OfflineAlert, { useIsOffline } from "../extras/OfflineAlert";
 import { useHistoricalBudget } from "../extras/useHistoricalBudget";
 import HistoryIcon from '@mui/icons-material/History';
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 const fabStyle = { position: 'fixed', bottom: 16, right: 16 };
 
@@ -151,7 +151,7 @@ export default function EditCategory() {
         event.preventDefault();
         setErrorText('');
         if (categoryName === '' || categoryName === null) {
-            setErrorText('Please enter a category name');
+            setErrorText('Informe o nome da categoria');
             return;
         }
         const amt = (categoryAmount === null || (categoryAmount as any) === '') ? 0 : Number(categoryAmount);
@@ -198,11 +198,11 @@ export default function EditCategory() {
     });
 
     const dateSections = [
-        { key: 'upcoming', label: 'Upcoming', transactions: upcomingTransactions, expanded: upcomingExpanded, setExpanded: setUpcomingExpanded, storageKey: 'ecUpcomingExpanded', color: 'success' },
-        { key: 'today', label: 'Today', transactions: todayTransactions, expanded: todayExpanded, setExpanded: setTodayExpanded, storageKey: 'ecTodayExpanded' },
-        { key: 'yesterday', label: 'Yesterday', transactions: yesterdayTransactions, expanded: yesterdayExpanded, setExpanded: setYesterdayExpanded, storageKey: 'ecYesterdayExpanded' },
-        { key: 'lastWeek', label: 'Last Week', transactions: lastWeekTransactions, expanded: lastWeekExpanded, setExpanded: setLastWeekExpanded, storageKey: 'ecLastWeekExpanded' },
-        { key: 'earlier', label: 'Earlier', transactions: earlierTransactions, expanded: earlierExpanded, setExpanded: setEarlierExpanded, storageKey: 'ecEarlierExpanded' },
+        { key: 'upcoming', label: 'Próximas', transactions: upcomingTransactions, expanded: upcomingExpanded, setExpanded: setUpcomingExpanded, storageKey: 'ecUpcomingExpanded', color: 'success' },
+        { key: 'today', label: 'Hoje', transactions: todayTransactions, expanded: todayExpanded, setExpanded: setTodayExpanded, storageKey: 'ecTodayExpanded' },
+        { key: 'yesterday', label: 'Ontem', transactions: yesterdayTransactions, expanded: yesterdayExpanded, setExpanded: setYesterdayExpanded, storageKey: 'ecYesterdayExpanded' },
+        { key: 'lastWeek', label: 'Semana Passada', transactions: lastWeekTransactions, expanded: lastWeekExpanded, setExpanded: setLastWeekExpanded, storageKey: 'ecLastWeekExpanded' },
+        { key: 'earlier', label: 'Anteriores', transactions: earlierTransactions, expanded: earlierExpanded, setExpanded: setEarlierExpanded, storageKey: 'ecEarlierExpanded' },
     ];
 
     React.useEffect(() => {
@@ -233,13 +233,13 @@ export default function EditCategory() {
                             <Stack spacing={-1}>
                                 <Typography variant='overline'>
                                     {currentSection?.sectionName}
-                                    {currentSectionType === 'income' ? ' · Income' : ' · Expense'}
+                                    {currentSectionType === 'income' ? ' · Receita' : ' · Despesa'}
                                 </Typography>
                                 {editMode ?
                                     <Grow in={editMode}>
                                         <TextField fullWidth size='small' variant='filled' onFocus={handleFocus}
                                             value={categoryName} onChange={(e: any) => setCategoryName(e.target.value)}
-                                            type="text" label="Category Name" />
+                                            type="text" label="Nome da Categoria" />
                                     </Grow>
                                     : <Typography variant='h6'>{categoryName}</Typography>
                                 }
@@ -256,17 +256,17 @@ export default function EditCategory() {
                                             value={categoryAmount} onChange={(e: any) => setCategoryAmount(e.target.value)}
                                             type="number"
                                             slotProps={{
-                                                input: { startAdornment: <InputAdornment position="start">$</InputAdornment> },
+                                                input: { startAdornment: <InputAdornment position="start">R$</InputAdornment> },
                                                 htmlInput: { step: 'any' },
                                             }}
-                                            placeholder='Budget Amount' label="Budget Amount" />
+                                            placeholder='Valor Orçado' label="Valor Orçado" />
                                         <Box display='flex' alignItems='center' gap={0.5} sx={{ mb: 1 }}>
                                             <HistoryIcon fontSize='small' color='action' />
                                             <Typography variant='body2' color='text.secondary'>
-                                                1 month ago: {histLoading ? '...' : oneMonthAgo !== null ? formatter.format(oneMonthAgo) : 'N/A'}
+                                                1 mês atrás: {histLoading ? '...' : oneMonthAgo !== null ? formatter.format(oneMonthAgo) : '—'}
                                             </Typography>
                                             <Typography variant='body2' color='text.secondary' sx={{ ml: 2 }}>
-                                                1 year ago: {histLoading ? '...' : oneYearAgo !== null ? formatter.format(oneYearAgo) : 'N/A'}
+                                                1 ano atrás: {histLoading ? '...' : oneYearAgo !== null ? formatter.format(oneYearAgo) : '—'}
                                             </Typography>
                                         </Box>
                                     </>
@@ -283,7 +283,7 @@ export default function EditCategory() {
                                     </Box>
                                     {bigger ?
                                         <Fab color="secondary" variant='extended' onClick={addNewTransClick}>
-                                            <AddIcon /> Add Transaction
+                                            <AddIcon /> Nova Transação
                                         </Fab> : null}
                                 </Stack>
                             </Grid>
@@ -305,8 +305,8 @@ export default function EditCategory() {
                                             );
                                         }
                                     }}
-                                    label="Notes"
-                                    placeholder="Add notes for this category..."
+                                    label="Anotações"
+                                    placeholder="Adicione anotações para esta categoria..."
                                     sx={{ mb: 1 }}
                                     disabled={offline}
                                 />
@@ -315,7 +315,7 @@ export default function EditCategory() {
                                 <Grid size={12}>
                                     <Grow in={editMode}>
                                         <DialogActions>
-                                            <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit' disabled={offline}>Save Changes</Button>
+                                            <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit' disabled={offline}>Salvar Alterações</Button>
                                         </DialogActions>
                                     </Grow>
                                 </Grid> : null}
@@ -352,7 +352,7 @@ export default function EditCategory() {
                                                                             <Grid container columnSpacing={1} alignItems='center' sx={{ width: '100%' }}>
                                                                                 <Grid size={1.3}>
                                                                                     <Avatar sx={{ ml: -1, fontSize: 15, textAlign: 'center', bgcolor: 'text.secondary' }}>
-                                                                                        {dayjs(row.transactionDate).format('MMM DD')}
+                                                                                        {dayjs(row.transactionDate).locale('pt-br').format('DD MMM')}
                                                                                     </Avatar>
                                                                                 </Grid>
                                                                                 <Grid size='grow'>
@@ -379,9 +379,9 @@ export default function EditCategory() {
                                         <EmptyState
                                             dense
                                             icon={<ReceiptLongIcon />}
-                                            title='Nothing tracked here'
-                                            description='Add a transaction to this category to see it listed here.'
-                                            actionLabel='Add Transaction'
+                                            title='Nada lançado aqui'
+                                            description='Adicione uma transação a esta categoria para vê-la aqui.'
+                                            actionLabel='Nova Transação'
                                             actionIcon={<AddIcon />}
                                             onAction={addNewTransClick}
                                             actionDisabled={offline}
@@ -397,26 +397,26 @@ export default function EditCategory() {
             </Dialog>
             <Menu anchorEl={anchorEl} open={moreOpen} onClose={() => setAnchorEl(null)}>
                 <MenuItem onClick={() => { setAnchorEl(null); setEditMode(!editMode); }}>
-                    <EditIcon sx={{ mr: 1 }} />Edit Category
+                    <EditIcon sx={{ mr: 1 }} />Editar Categoria
                 </MenuItem>
                 <MenuItem onClick={handleBalanceClick} disabled={offline} sx={{ alignItems: 'flex-start', py: 1, maxWidth: 320, whiteSpace: 'normal' }}>
                     <ListItemIcon sx={{ mt: 0.5 }}><BalanceIcon fontSize='small' /></ListItemIcon>
                     <ListItemText
-                        primary='Balance Category'
-                        secondary={`Set the planned amount to match what you've ${currentSectionType === 'income' ? 'earned' : 'spent'} so far (${formatter.format(balanceTarget)}).`}
+                        primary='Equilibrar Categoria'
+                        secondary={`Ajusta o valor planejado para o que você já ${currentSectionType === 'income' ? 'recebeu' : 'gastou'} até agora (${formatter.format(balanceTarget)}).`}
                         secondaryTypographyProps={{ variant: 'caption' }}
                     />
                 </MenuItem>
                 <MenuItem onClick={handleAllocateClick} disabled={offline} sx={{ alignItems: 'flex-start', py: 1, maxWidth: 320, whiteSpace: 'normal' }}>
                     <ListItemIcon sx={{ mt: 0.5 }}><AccountBalanceWalletIcon fontSize='small' /></ListItemIcon>
                     <ListItemText
-                        primary='Allocate Rest of Budget'
-                        secondary={`Assign all unbudgeted income to this category (${formatter.format(allocateTarget)}).`}
+                        primary='Alocar Restante do Orçamento'
+                        secondary={`Atribui toda a receita ainda não orçada a esta categoria (${formatter.format(allocateTarget)}).`}
                         secondaryTypographyProps={{ variant: 'caption' }}
                     />
                 </MenuItem>
                 <MenuItem onClick={handleDeleteClick} disabled={offline}>
-                    <DeleteIcon sx={{ mr: 1 }} />Delete Category
+                    <DeleteIcon sx={{ mr: 1 }} />Excluir Categoria
                 </MenuItem>
             </Menu>
         </>

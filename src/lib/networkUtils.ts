@@ -12,7 +12,7 @@ const NETWORK_TIMEOUT = 8000;
  */
 export function withNetworkTimeout<T>(promise: Promise<T> | PromiseLike<T>, ms: number = NETWORK_TIMEOUT): Promise<T> {
     return new Promise<T>((resolve, reject) => {
-        const timer = setTimeout(() => reject(new Error('Network timeout — are you offline?')), ms);
+        const timer = setTimeout(() => reject(new Error('Tempo de rede esgotado — você está offline?')), ms);
         Promise.resolve(promise).then(
             (val) => { clearTimeout(timer); resolve(val); },
             (err) => { clearTimeout(timer); reject(err); },

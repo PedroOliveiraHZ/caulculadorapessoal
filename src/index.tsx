@@ -15,6 +15,8 @@ import BudgetPage from "./components/BudgetPage";
 import TransactionsPage from "./components/TransactionsPage";
 import AnalyticsPage from "./components/AnalyticsPage";
 import SettingsPage from "./components/SettingsPage";
+import MetaPage from "./components/MetaPage";
+import 'dayjs/locale/pt-br';
 
 // Auth pages can stay lazy — they require network anyway
 const LoginPage = lazy(() => import("./components/LoginPage"));
@@ -65,6 +67,7 @@ root.render(
                 <Routes>
                     <Route path='/' errorElement={<ErrorPage />} element={<App />}>
                         <Route path='budget' element={<BudgetPage />} />
+                        <Route path='meta' element={<MetaPage />} />
                         <Route path='transactions' element={<TransactionsPage />} />
                         <Route path='analytics' element={<AnalyticsPage />} />
                         <Route path='settings' element={<SettingsPage />} />

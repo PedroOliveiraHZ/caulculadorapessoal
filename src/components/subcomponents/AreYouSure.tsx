@@ -36,9 +36,9 @@ export default function AreYouSure() {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => handleClick(false)} size='small'>Cancel</Button>
+                        <Button onClick={() => handleClick(false)} size='small'>Cancelar</Button>
                         <Button onClick={() => handleClick(true)} size='small' autoFocus variant='contained'>
-                            Let's do it
+                            Confirmar
                         </Button>
                     </DialogActions>
                 </Box>

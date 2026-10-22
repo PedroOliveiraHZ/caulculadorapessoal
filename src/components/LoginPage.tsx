@@ -62,7 +62,7 @@ export default function LoginPage() {
             if (errorText === '') {
                 navigate("/budget", { replace: true });
                 setSnackSev('success')
-                setSnackText('Login Successful')
+                setSnackText('Login realizado!')
                 setSnackOpen(true)
             }
             setLoadingOpen(false)
@@ -91,7 +91,7 @@ export default function LoginPage() {
         localStorage.setItem('fullName', fullName)
         navigate("/budget", { replace: true });
         setSnackSev('success')
-        setSnackText('Login Successful')
+        setSnackText('Login realizado!')
         setSnackOpen(true)
         setLoadingOpen(false)
     }
@@ -162,7 +162,7 @@ export default function LoginPage() {
                                 </Stack>
                             </Grid>
                             <Grid size={12} sx={{ mb: 0, pb: 1 }}>
-                                <Typography variant='body2'>Sign in to continue.</Typography>
+                                <Typography variant='body2'>Entre para continuar.</Typography>
                             </Grid>
                             <Grid size={12}>
                                 <TextField
@@ -170,7 +170,7 @@ export default function LoginPage() {
                                     name="email"
                                     type="email"
                                     autoFocus
-                                    label="Email"
+                                    label="E-mail"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -180,13 +180,13 @@ export default function LoginPage() {
                                     fullWidth
                                     name="password"
                                     type={showPassword ? 'text' : 'password'}
-                                    label="Password"
+                                    label="Senha"
                                     value={password}
                                     slotProps={{
                                         input: {
                                             endAdornment: <InputAdornment position="end">
                                                 <IconButton
-                                                    aria-label="toggle password visibility"
+                                                    aria-label="mostrar/ocultar senha"
                                                     onClick={handleClickShowPassword}
                                                     onMouseDown={handleMouseDownPassword}
                                                     edge="end"
@@ -203,20 +203,20 @@ export default function LoginPage() {
                                 <Typography variant='body2' color='error'>{errorText}</Typography>
                             </Grid>
                             <Grid size={12}>
-                                <Button fullWidth variant='contained' disabled={!validateForm()} type='submit' sx={{ mt: 1 }}>Sign in</Button>
+                                <Button fullWidth variant='contained' disabled={!validateForm()} type='submit' sx={{ mt: 1 }}>Entrar</Button>
                             </Grid>
                             <Grid size={12}>
                                 {isCustomSupabaseConfig() || isSelfHostedConfig() ? (
                                     <Typography variant='body2' color='text.secondary'>
-                                        Forgot your password? Contact your administrator.
+                                        Esqueceu a senha? Fale com o administrador.
                                     </Typography>
                                 ) : (
-                                    <Button size='small' onClick={() => navigate('/forgot-password', { replace: true })}>Forgot password?</Button>
+                                    <Button size='small' onClick={() => navigate('/forgot-password', { replace: true })}>Esqueceu a senha?</Button>
                                 )}
                             </Grid>
                             <Grid size={12}>
-                                <Typography display='inline' variant='body2'>Don't have an account? </Typography>
-                                <Button size='small' onClick={handleRedirectSignIn}>Sign Up</Button>
+                                <Typography display='inline' variant='body2'>Não tem conta? </Typography>
+                                <Button size='small' onClick={handleRedirectSignIn}>Cadastre-se</Button>
                             </Grid>
                             <Grid size={12} sx={{ textAlign: 'center' }}>
                                 <Button
@@ -224,10 +224,10 @@ export default function LoginPage() {
                                     startIcon={<StorageIcon />}
                                     onClick={() => navigate('/backend-config')}
                                 >
-                                    Configure Backend
+                                    Configurar Backend
                                 </Button>
                                 {isCustomSupabaseConfig() && (
-                                    <Chip label="Custom backend" size="small" color="info" variant="outlined" sx={{ ml: 1 }} />
+                                    <Chip label="Backend personalizado" size="small" color="info" variant="outlined" sx={{ ml: 1 }} />
                                 )}
                             </Grid>
                         </Grid>

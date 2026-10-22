@@ -58,8 +58,8 @@ export default function SectionFields({
                     },
                 }}
             >
-                <ToggleButton value='income'><TrendingUpIcon sx={{ mr: 0.5 }} />Income</ToggleButton>
-                <ToggleButton value='expense'><TrendingDownIcon sx={{ mr: 0.5 }} />Expense</ToggleButton>
+                <ToggleButton value='income'><TrendingUpIcon sx={{ mr: 0.5 }} />Receita</ToggleButton>
+                <ToggleButton value='expense'><TrendingDownIcon sx={{ mr: 0.5 }} />Despesa</ToggleButton>
             </ToggleButtonGroup>
 
             <Box
@@ -76,8 +76,8 @@ export default function SectionFields({
                     value={name}
                     onChange={(e: any) => onNameChange(e.target.value)}
                     type='text'
-                    label='Section Name'
-                    helperText={isIncome ? 'Groups income categories like Salary or Side Income.' : 'Groups spending categories like Housing or Food.'}
+                    label='Nome da Seção'
+                    helperText={isIncome ? 'Agrupa categorias de receita como Salário ou Renda Extra.' : 'Agrupa categorias de gasto como Moradia ou Alimentação.'}
                 />
             </Box>
         </Box>

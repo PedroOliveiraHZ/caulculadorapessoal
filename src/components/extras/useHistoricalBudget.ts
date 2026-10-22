@@ -36,8 +36,8 @@ export function useHistoricalBudget(categoryName: string | undefined, enabled: b
                 const oneYearBack = currentDate.subtract(12, 'month');
 
                 const periods = [
-                    { month: oneMonthBack.format('MMMM'), year: oneMonthBack.year() },
-                    { month: oneYearBack.format('MMMM'), year: oneYearBack.year() },
+                    { month: oneMonthBack.locale('en').format('MMMM'), year: oneMonthBack.year() },
+                    { month: oneYearBack.locale('en').format('MMMM'), year: oneYearBack.year() },
                 ];
 
                 const results: (number | null)[] = [null, null];

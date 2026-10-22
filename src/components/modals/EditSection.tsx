@@ -68,8 +68,8 @@ export default function EditSection() {
     async function handleDoubleCheck() {
         setDeleteSection(true)
         setAnchorEl(null);
-        setCheckTitle('Are you sure you want to delete this section?')
-        setCheckDetails('WARNING: This will delete all categories and transactions assigned to this section as well.')
+        setCheckTitle('Tem certeza que deseja excluir esta seção?')
+        setCheckDetails('ATENÇÃO: todas as categorias e transações desta seção também serão excluídas.')
         setAreYouSureOpen(true)
     }
 
@@ -124,18 +124,18 @@ export default function EditSection() {
             setOpenEditSection(false)
             setLoadingOpen(false)
             setSnackSev('success')
-            setSnackText('Section deleted')
+            setSnackText('Seção excluída')
             setSnackOpen(true)
             setCheckAccept(false)
             setDeleteSection(false)
         } catch (err: any) {
             setLoadingOpen(false)
-            setErrorText(err.message || 'Network error — try again when online')
+            setErrorText(err.message || 'Erro de rede — tente novamente quando estiver online')
         }
     }
     const verifyInputs = () => {
         if (sectionName === '' || sectionName === null) {
-            setErrorText('Please enter section name.')
+            setErrorText('Informe o nome da seção.')
             return false
         }
         return true
@@ -172,11 +172,11 @@ export default function EditSection() {
                 setSectionsArray(newArr);
                 setOpenEditSection(false)
                 setSnackSev('success')
-                setSnackText('Section updated!')
+                setSnackText('Seção atualizada!')
                 setSnackOpen(true)
             } catch (err: any) {
                 setLoadingOpen(false)
-                setErrorText(err.message || 'Network error — try again when online')
+                setErrorText(err.message || 'Erro de rede — tente novamente quando estiver online')
             }
         }
     }
@@ -209,7 +209,7 @@ export default function EditSection() {
                             >
                                 <MoreVertIcon />
                             </IconButton>
-                            <div>Edit Section</div>
+                            <div>Editar Seção</div>
                         </Stack>
                         <IconButton onClick={() => setOpenEditSection(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
@@ -225,7 +225,7 @@ export default function EditSection() {
                     </DialogContent>
                     {errorText && <Box sx={{ mx: 2, mt: 1 }}><Typography color='error' variant='body2'>{errorText}</Typography></Box>}
                     <DialogActions sx={{ position: 'sticky', bottom: 0, bgcolor: 'background.paper', borderTop: '1px solid', borderColor: 'divider', px: 2, py: 1.5 }}>
-                        <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit' disabled={offline}>Save Changes</Button>
+                        <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit' disabled={offline}>Salvar Alterações</Button>
                     </DialogActions>
                 </Box>
             </Dialog>
@@ -242,7 +242,7 @@ export default function EditSection() {
             >
                 <MenuItem onClick={handleDoubleCheck} disabled={offline}>
                     <DeleteIcon />
-                    Delete
+                    Excluir
                 </MenuItem>
             </Menu>
         </>

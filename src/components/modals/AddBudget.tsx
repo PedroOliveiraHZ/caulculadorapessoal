@@ -26,41 +26,43 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import OfflineAlert, { useIsOffline } from "../extras/OfflineAlert";
 
-const DEFAULT_BUDGET_TEMPLATE: { sectionName: string; sectionType: string; categories: string[] }[] = [
+type TemplateCategory = string | { name: string; amount: number };
+
+const DEFAULT_BUDGET_TEMPLATE: { sectionName: string; sectionType: string; categories: TemplateCategory[] }[] = [
     {
-        sectionName: 'Income',
+        sectionName: 'Receitas',
         sectionType: 'income',
-        categories: ['💼 Paycheck', 'Side Hustle', 'Other Income'],
+        categories: ['💼 Salário', '💸 Renda Extra', '➕ Outras Receitas'],
     },
     {
-        sectionName: 'Housing',
+        sectionName: 'Investimentos',
         sectionType: 'expense',
-        categories: ['🏠 Rent / Mortgage', '💧 Utilities', '🛜 Internet', '⚒️ Home Maintenance'],
+        categories: [{ name: '🏢 Apartamento', amount: 250 }, '🏦 Reserva de Emergência'],
     },
     {
-        sectionName: 'Transportation',
+        sectionName: 'Moradia',
         sectionType: 'expense',
-        categories: ['⛽ Gas', '💥 Car Insurance', '🔧 Car Maintenance'],
+        categories: ['🏠 Aluguel', '💡 Energia', '💧 Água', '🛜 Internet', '📱 Celular'],
     },
     {
-        sectionName: 'Food',
+        sectionName: 'Transporte',
         sectionType: 'expense',
-        categories: ['🛒 Groceries', '🍝 Restaurants'],
+        categories: ['⛽ Combustível', '🚌 Ônibus / Uber', '🔧 Manutenção'],
     },
     {
-        sectionName: 'Personal',
+        sectionName: 'Alimentação',
         sectionType: 'expense',
-        categories: ['👚 Clothing', '📺 Entertainment', '📺 Subscriptions', '🏋🏼 Health & Fitness', '🕺🏼 Fun Money']
+        categories: ['🛒 Mercado', '🍔 Restaurantes / Delivery'],
     },
     {
-        sectionName: 'Savings',
+        sectionName: 'Pessoal',
         sectionType: 'expense',
-        categories: ['🏦 Emergency Fund', '📚 Investments'],
+        categories: ['👚 Roupas', '📺 Assinaturas', '🏋🏼 Saúde e Academia', '🎉 Lazer'],
     },
     {
-        sectionName: 'Lifestyle',
+        sectionName: 'Outros',
         sectionType: 'expense',
-        categories: ['🐕‍🦺 Pet Care', '❔ Miscellaneous', '💛 Giving'],
+        categories: ['💳 Cartão / Dívidas', '❔ Diversos', '💛 Doações'],
     },
 ];
 
@@ -71,7 +73,7 @@ export default function AddBudget() {
     const addNewBudget = useModalStore(s => s.addBudget);
     const setAddNewBudget = useModalStore(s => s.setAddBudget);
     const [budgetName, setBudgetName] = React.useState('');
-    const [useDefault, setUseDefault] = React.useState(false);
+    const [useDefault, setUseDefault] = React.useState(true);
     const [errorText, setErrorText] = React.useState('');
     const setSectionArray = useTableStore(s => s.setSections);
     const setCategoryArray = useTableStore(s => s.setCategories);
@@ -88,7 +90,7 @@ export default function AddBudget() {
         event.preventDefault();
         setErrorText('')
         if (budgetName === '' || budgetName === null) {
-            setErrorText('Please enter a name')
+            setErrorText('Informe um nome')
             return
         }
         setLoadingOpen(true)
@@ -96,7 +98,7 @@ export default function AddBudget() {
         const userReady = await ensureUserRecord();
         if (!userReady) {
             setLoadingOpen(false)
-            setErrorText('Unable to verify your account. Please try logging out and back in.')
+            setErrorText('Não foi possível verificar sua conta. Saia e entre novamente.')
             return
         }
         const currentRecordID = useGlobalStore.getState().currentUser.recordID;
@@ -115,7 +117,7 @@ export default function AddBudget() {
         }
         setBudgetArray(prevState => [...prevState, newBudget]);
         const resolvedYear = currentBudgetDetails.year || Number(dayjs().format('YYYY'));
-        const resolvedMonth = currentBudgetDetails.month || dayjs().format('MMMM');
+        const resolvedMonth = currentBudgetDetails.month || dayjs().locale('en').format('MMMM');
         let currentBudget = {
             budgetID: newBudget.recordID,
             year: resolvedYear,
@@ -138,12 +140,12 @@ export default function AddBudget() {
                     sectionYear: resolvedYear,
                     sectionMonth: resolvedMonth,
                 });
-                for (const catName of template.categories) {
+                for (const cat of template.categories) {
                     allCategories.push({
                         recordID: uuidv4(),
                         sectionID: sectionID,
-                        categoryName: catName,
-                        amount: 0,
+                        categoryName: typeof cat === 'string' ? cat : cat.name,
+                        amount: typeof cat === 'string' ? 0 : cat.amount,
                     });
                 }
             }
@@ -174,13 +176,13 @@ export default function AddBudget() {
         setAddNewBudget(false)
         setLoadingOpen(false)
         setSnackSev('success')
-        setSnackText('Budget Added!')
+        setSnackText('Orçamento criado!')
         setSnackOpen(true)
     }
     React.useEffect(() => {
         if (addNewBudget) return;
         setBudgetName('')
-        setUseDefault(false)
+        setUseDefault(true)
         setErrorText('')
     }, [addNewBudget])
     return (
@@ -193,7 +195,7 @@ export default function AddBudget() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }} component='form' onSubmit={handleSubmit}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        New Budget<IconButton onClick={() => setAddNewBudget(false)}><CloseIcon /></IconButton>
+                        Novo Orçamento<IconButton onClick={() => setAddNewBudget(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Grid container spacing={2}>
@@ -205,7 +207,7 @@ export default function AddBudget() {
                                     value={budgetName}
                                     onChange={(event: any) => setBudgetName(event.target.value)}
                                     type="text"
-                                    label="Budget Name"
+                                    label="Nome do Orçamento"
                                 />
                             </Grid>
                             <Grid size={12}>
@@ -216,14 +218,14 @@ export default function AddBudget() {
                                             onChange={(e) => setUseDefault(e.target.checked)}
                                         />
                                     }
-                                    label="Include default sections & categories"
+                                    label="Incluir seções e categorias padrão (com meta do apartamento)"
                                 />
                             </Grid>
                         </Grid>
                     </DialogContent>
                     <Box sx={{ mx: 1, mt: 0.5 }}><Typography color='error'>{errorText}</Typography></Box>
                     <DialogActions>
-                        <Button fullWidth startIcon={<AddIcon />} variant='contained' type='submit' disabled={offline}>Add Budget</Button>
+                        <Button fullWidth startIcon={<AddIcon />} variant='contained' type='submit' disabled={offline}>Criar Orçamento</Button>
                     </DialogActions>
                 </Box>
             </Dialog>

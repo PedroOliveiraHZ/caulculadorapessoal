@@ -84,7 +84,7 @@ export async function redirectToCheckout(): Promise<void> {
     );
 
     if (error) {
-        throw new Error(error.message || "Failed to create checkout session");
+        throw new Error(error.message || "Falha ao criar sessão de pagamento");
     }
 
     if (!data?.url) {
@@ -110,7 +110,7 @@ export async function redirectToBillingPortal(): Promise<void> {
     );
 
     if (error) {
-        throw new Error(error.message || "Failed to create billing portal session");
+        throw new Error(error.message || "Falha ao abrir portal de cobrança");
     }
 
     if (!data?.url) {

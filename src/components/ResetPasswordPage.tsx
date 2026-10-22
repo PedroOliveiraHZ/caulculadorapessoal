@@ -43,12 +43,12 @@ export default function ResetPasswordPage() {
         setErrorText('');
 
         if (newPassword.length < 8) {
-            setErrorText('Password must be at least 8 characters');
+            setErrorText('A senha deve ter pelo menos 8 caracteres');
             return;
         }
 
         if (newPassword !== confirmPassword) {
-            setErrorText('Passwords do not match');
+            setErrorText('As senhas não coincidem');
             return;
         }
 
@@ -114,21 +114,21 @@ export default function ResetPasswordPage() {
                         {success ? (
                             <>
                                 <Grid size={12} sx={{ mb: 1 }}>
-                                    <Typography variant='h6' sx={{ fontWeight: 600 }}>Password updated</Typography>
+                                    <Typography variant='h6' sx={{ fontWeight: 600 }}>Senha atualizada</Typography>
                                     <Typography variant='body2' sx={{ mt: 1 }}>
-                                        Your password has been reset successfully. You can now sign in with your new password.
+                                        Sua senha foi redefinida. Agora você pode entrar com a nova senha.
                                     </Typography>
                                 </Grid>
                                 <Grid size={12}>
                                     <Button fullWidth variant='contained' onClick={() => navigate('/login', { replace: true })}>
-                                        Go to Sign In
+                                        Ir para o Login
                                     </Button>
                                 </Grid>
                             </>
                         ) : (
                             <>
                                 <Grid size={12} sx={{ mb: 0, pb: 1 }}>
-                                    <Typography variant='body2'>Enter your new password below.</Typography>
+                                    <Typography variant='body2'>Digite sua nova senha abaixo.</Typography>
                                 </Grid>
                                 <Grid size={12}>
                                     <TextField
@@ -136,13 +136,13 @@ export default function ResetPasswordPage() {
                                         name="newPassword"
                                         type={showPassword ? 'text' : 'password'}
                                         autoFocus
-                                        label="New Password"
+                                        label="Nova Senha"
                                         value={newPassword}
                                         slotProps={{
                                             input: {
                                                 endAdornment: <InputAdornment position="end">
                                                     <IconButton
-                                                        aria-label="toggle password visibility"
+                                                        aria-label="mostrar/ocultar senha"
                                                         onClick={handleClickShowPassword}
                                                         onMouseDown={handleMouseDownPassword}
                                                         edge="end"
@@ -160,14 +160,14 @@ export default function ResetPasswordPage() {
                                         fullWidth
                                         name="confirmPassword"
                                         type={showPassword ? 'text' : 'password'}
-                                        label="Confirm New Password"
+                                        label="Confirmar Nova Senha"
                                         value={confirmPassword}
                                         error={confirmPassword.length > 0 && newPassword !== confirmPassword}
                                         slotProps={{
                                             input: {
                                                 endAdornment: <InputAdornment position="end">
                                                     <IconButton
-                                                        aria-label="toggle password visibility"
+                                                        aria-label="mostrar/ocultar senha"
                                                         onClick={handleClickShowPassword}
                                                         onMouseDown={handleMouseDownPassword}
                                                         edge="end"
@@ -191,7 +191,7 @@ export default function ResetPasswordPage() {
                                         type='submit'
                                         sx={{ mt: 1 }}
                                     >
-                                        Reset Password
+                                        Redefinir Senha
                                     </Button>
                                 </Grid>
                             </>

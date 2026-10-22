@@ -4,14 +4,14 @@ import dayjs from "dayjs";
 let currentBudget = {
     budgetID: '1',
     year: Number(dayjs().format('YYYY')),
-    month: dayjs().format('MMMM'),
+    month: dayjs().locale('en').format('MMMM'),
 };
 
 if (localStorage.getItem('currentBudget')) {
     currentBudget = JSON.parse(localStorage.getItem('currentBudget')!);
     if ((currentBudget as any).year === undefined) {
         currentBudget.year = Number(dayjs().format('YYYY'));
-        currentBudget.month = dayjs().format('MMMM');
+        currentBudget.month = dayjs().locale('en').format('MMMM');
         localStorage.setItem('currentBudget', JSON.stringify(currentBudget));
     }
 }

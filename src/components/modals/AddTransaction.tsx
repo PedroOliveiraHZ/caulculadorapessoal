@@ -1,3 +1,4 @@
+import { mesPt } from '../../lib/meta';
 import React from 'react';
 import TextField from "@mui/material/TextField";
 import Dialog from '@mui/material/Dialog';
@@ -45,9 +46,9 @@ const GroupItems = styled('ul')({
     padding: 0,
 });
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 
 export default function AddTransaction() {
@@ -83,11 +84,11 @@ export default function AddTransaction() {
     const bigger = useMediaQuery(theme.breakpoints.up('sm'));
     const verifyInputs = () => {
         if (transactionTitle === '' || transactionTitle === null) {
-            setErrorText('Please enter a title')
+            setErrorText('Informe um título')
             return false
         }
         if (transactionDate === null) {
-            setErrorText('Please enter a date')
+            setErrorText('Informe uma data')
             return false
         }
         return true
@@ -95,7 +96,7 @@ export default function AddTransaction() {
     async function handleSubmit(event: any) {
         event.preventDefault();
         if (currentBudget.budgetID === undefined) {
-            setErrorText('You need to create a budget first! Go to the settings page, click \'Select Budget\'')
+            setErrorText('Crie um orçamento primeiro! Vá em Ajustes e clique em \'Trocar Orçamento\'')
             return
         }
         setErrorText('')
@@ -107,14 +108,14 @@ export default function AddTransaction() {
         if (splitBool) {
             const splitTotal = splitArr.reduce((acc, obj) => acc + Number(obj.transAmount), 0);
             if (Math.abs(Number(transactionAmount) - splitTotal) > 0.01) {
-                setErrorText('Must allocate full amount!')
+                setErrorText('É preciso distribuir o valor total!')
                 setLoadingOpen(false)
                 return
             }
 
             // Validate all splits have a category selected
             if (splitArr.some(row => row.cat === null || row.cat === undefined)) {
-                setErrorText('Please select a category for each split')
+                setErrorText('Selecione uma categoria para cada divisão')
                 setLoadingOpen(false)
                 return
             }
@@ -136,7 +137,7 @@ export default function AddTransaction() {
                 for (const x of addTransactions) {
                     const result = await insertTransactionWithOfflineSupport(x);
                     if (!result.success) {
-                        setErrorText(result.error || 'Failed to save transaction')
+                        setErrorText(result.error || 'Falha ao salvar a transação')
                         setLoadingOpen(false)
                         return
                     }
@@ -145,10 +146,10 @@ export default function AddTransaction() {
                 setAddNewTransaction(false)
                 setLoadingOpen(false)
                 setSnackSev('success')
-                setSnackText(navigator.onLine ? 'Transactions Added!' : 'Transactions saved offline — will sync when online!')
+                setSnackText(navigator.onLine ? 'Transações adicionadas!' : 'Transações salvas offline — serão sincronizadas quando estiver online!')
                 setSnackOpen(true)
             } catch (err: any) {
-                setErrorText(err.message || 'Failed to save split transactions')
+                setErrorText(err.message || 'Falha ao salvar as transações divididas')
                 setLoadingOpen(false)
                 return
             }
@@ -168,7 +169,7 @@ export default function AddTransaction() {
         };
         const result = await insertTransactionWithOfflineSupport(newTransaction);
         if (!result.success) {
-            setErrorText(result.error || 'Failed to save transaction')
+            setErrorText(result.error || 'Falha ao salvar a transação')
             setLoadingOpen(false)
             return
         }
@@ -177,7 +178,7 @@ export default function AddTransaction() {
         setAddNewTransaction(false)
         setLoadingOpen(false)
         setSnackSev('success')
-        setSnackText(navigator.onLine ? 'Transaction Added!' : 'Transaction saved offline — will sync when online!')
+        setSnackText(navigator.onLine ? 'Transação adicionada!' : 'Transação salva offline — será sincronizada quando estiver online!')
         setSnackOpen(true)
     }
     function addSplit() {
@@ -259,7 +260,7 @@ export default function AddTransaction() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }} component='form' onSubmit={handleSubmit}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1 }}>
-                        <span>New Transaction</span>
+                        <span>Nova Transação</span>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <ToggleButton
                                 value="check"
@@ -270,22 +271,22 @@ export default function AddTransaction() {
                                 sx={{ borderRadius: 2, px: 1.5, textTransform: 'none', fontWeight: 600 }}
                             >
                                 <AltRouteIcon fontSize='small' sx={{ mr: 0.5 }} />
-                                Split
+                                Dividir
                             </ToggleButton>
                             <IconButton onClick={() => setAddNewTransaction(false)}><CloseIcon /></IconButton>
                         </Box>
                     </DialogTitle>
                     <DialogContent dividers>
-                        {(currentBudget.month !== dayjs().format('MMMM') || currentBudget.year !== Number(dayjs().format('YYYY'))) && (
+                        {(currentBudget.month !== dayjs().locale('en').format('MMMM') || currentBudget.year !== Number(dayjs().format('YYYY'))) && (
                             <Alert severity="warning" variant="outlined" sx={{ py: 0, mb: 2 }}>
-                                You're adding to {currentBudget.month} {currentBudget.year}
+                                Você está lançando em {mesPt(currentBudget.month)} de {currentBudget.year}
                             </Alert>
                         )}
 
                         <TransactionFields
                             amount={transactionAmount}
                             onAmountChange={(v) => setTransactionAmount(v as any)}
-                            amountLabel={splitBool ? 'Total Amount' : 'Amount'}
+                            amountLabel={splitBool ? 'Valor Total' : 'Valor'}
                             autoFocusAmount
                             focusAmountKey={addNewTransaction}
                             showTypeToggle={!splitBool}
@@ -295,7 +296,7 @@ export default function AddTransaction() {
                             onDateChange={setTransactionDate}
                             title={transactionTitle}
                             onTitleChange={setTransactionTitle}
-                            titleLabel={splitBool ? 'Overall Title' : 'Title'}
+                            titleLabel={splitBool ? 'Título Geral' : 'Título'}
                             titleRequired
                             showCategory={!splitBool}
                             category={transactionCategory}
@@ -321,7 +322,7 @@ export default function AddTransaction() {
                                                 bgcolor: (theme) => alpha(balanced ? theme.palette.success.main : theme.palette.warning.main, 0.12),
                                             }}
                                         >
-                                            <Typography variant='subtitle2' color='text.secondary'>Left to allocate</Typography>
+                                            <Typography variant='subtitle2' color='text.secondary'>Falta distribuir</Typography>
                                             <Typography variant='subtitle2' sx={{ fontWeight: 700 }} color={balanced ? 'success.main' : 'warning.main'}>
                                                 {formatter.format(left)}
                                             </Typography>
@@ -342,13 +343,13 @@ export default function AddTransaction() {
                                         >
                                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
                                                 <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                                                    Split {idx + 1}
+                                                    Dividir {idx + 1}
                                                 </Typography>
                                                 <IconButton
                                                     size='small'
                                                     onClick={() => deleteSplitCat(x.recId)}
                                                     disabled={splitArr.length <= 1}
-                                                    aria-label='Remove split'
+                                                    aria-label='Remover divisão'
                                                 >
                                                     <CloseIcon fontSize='small' />
                                                 </IconButton>
@@ -364,7 +365,7 @@ export default function AddTransaction() {
                                                     onChange={(event: any, newValue: any) => {
                                                         changeSplitCat(x.recId, newValue)
                                                     }}
-                                                    renderInput={(params) => <TextField required onFocus={handleFocus} margin="none" {...params} label="Category" />}
+                                                    renderInput={(params) => <TextField required onFocus={handleFocus} margin="none" {...params} label="Categoria" />}
                                                     renderOption={(props, option) => (
                                                         <li {...props} key={option.id}>
                                                             <Box display='flex' justifyContent='space-between' width='100%' gap={1}>
@@ -388,7 +389,7 @@ export default function AddTransaction() {
                                                     type="number"
                                                     slotProps={{
                                                         input: {
-                                                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                                            startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                                                             endAdornment: (
                                                                 <InputAdornment position="end">
                                                                     <Button
@@ -397,22 +398,22 @@ export default function AddTransaction() {
                                                                         startIcon={<ReadMoreOutlinedIcon fontSize='small' />}
                                                                         sx={{ whiteSpace: 'nowrap', minWidth: 0 }}
                                                                     >
-                                                                        Rest
+                                                                        Resto
                                                                     </Button>
                                                                 </InputAdornment>
                                                             ),
                                                         },
                                                         htmlInput: { step: '.01' }
                                                     }}
-                                                    placeholder='Amount'
-                                                    label="Amount"
+                                                    placeholder='Valor'
+                                                    label="Valor"
                                                     required
                                                 />
                                             </Stack>
                                         </Paper>
                                     ))}
                                     <Button fullWidth variant='outlined' color='secondary' onClick={addSplit} startIcon={<AddIcon fontSize='small' />}>
-                                        Add Category Split
+                                        Adicionar Divisão
                                     </Button>
                                 </Stack>
                             </Box>
@@ -420,7 +421,7 @@ export default function AddTransaction() {
                     </DialogContent>
                     {errorText && <Box sx={{ mx: 2, mt: 1 }}><Typography color='error' variant='body2'>{errorText}</Typography></Box>}
                     <DialogActions sx={{ position: 'sticky', bottom: 0, bgcolor: 'background.paper', borderTop: '1px solid', borderColor: 'divider', px: 2, py: 1.5 }}>
-                        <Button fullWidth startIcon={<AddIcon />} type='submit' variant='contained'>Add Transaction</Button>
+                        <Button fullWidth startIcon={<AddIcon />} type='submit' variant='contained'>Nova Transação</Button>
                     </DialogActions>
                 </Box>
             </Dialog>

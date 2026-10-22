@@ -60,7 +60,7 @@ function buildNotificationBody(dueTomorrow: any[]): string {
     if (dueTomorrow.length === 1) {
         return `Tomorrow: "${dueTomorrow[0].title}"`;
     }
-    return `${dueTomorrow.length} transactions scheduled for tomorrow`;
+    return `${dueTomorrow.length} transações agendadas para amanhã`;
 }
 
 /**
@@ -82,8 +82,8 @@ export function checkAndNotify(transactions: any[]): void {
     if (dueTomorrow.length === 0) return;
 
     const title = dueTomorrow.length === 1
-        ? 'Transaction Reminder'
-        : `${dueTomorrow.length} Transaction Reminders`;
+        ? 'Lembrete de Transação'
+        : `${dueTomorrow.length} Lembretes de Transação`;
     const body = buildNotificationBody(dueTomorrow);
 
     try {

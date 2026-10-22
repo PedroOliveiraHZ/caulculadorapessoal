@@ -61,15 +61,15 @@ export default function SignUpPage() {
     }
     function validateFormFull() {
         if ((!email.includes('@')) || (email.length < 3)) {
-            setEmailText('Please enter a valid email')
+            setEmailText('Informe um e-mail válido')
             return false
         }
         if (password.length < 8) {
-            setPasswordText('Password must be longer')
+            setPasswordText('A senha precisa ser maior')
             return false
         }
         if (password !== password1) {
-            setPasswordText('Passwords must match')
+            setPasswordText('As senhas precisam coincidir')
             return false
         }
         return true
@@ -93,7 +93,7 @@ export default function SignUpPage() {
             })
             if (signupErr) {
                 if (signupErr.status === 429) {
-                    setErrorText("Too many attempts. Please wait a moment and try again.")
+                    setErrorText("Muitas tentativas. Aguarde um momento e tente novamente.")
                 } else {
                     setErrorText(signupErr.message)
                 }
@@ -103,7 +103,7 @@ export default function SignUpPage() {
             // Supabase returns an existing user with empty identities (instead of an error)
             // when the email is already registered — this prevents email enumeration.
             if (userData?.user?.identities?.length === 0) {
-                setErrorText("User with this email already exists")
+                setErrorText("Já existe um usuário com este e-mail")
                 console.error("Signup returned existing user with no identities")
                 return
             }
@@ -120,7 +120,7 @@ export default function SignUpPage() {
 
             setSignedUpBool(true)
             setSnackSev('success')
-            setSnackText('Signup Successful - please verify email to login')
+            setSnackText('Cadastro realizado — confirme seu e-mail para entrar')
             setSnackOpen(true)
         } catch (error: any) {
             setErrorText(error?.message)
@@ -181,24 +181,24 @@ export default function SignUpPage() {
                             {signedUpBool ?
                                 <>
                                     <Grid size={12} sx={{ mb: 0, pb: 1 }}>
-                                        <Typography color='text.secondary' variant='h6' sx={{ fontWeight: '600' }}>Congrats! You're signed up.</Typography>
-                                        <Typography variant='subtitle1' sx={{ fontWeight: '800' }}>We sent you an email - you'll need verify it before you log in.</Typography>
+                                        <Typography color='text.secondary' variant='h6' sx={{ fontWeight: '600' }}>Parabéns! Cadastro concluído.</Typography>
+                                        <Typography variant='subtitle1' sx={{ fontWeight: '800' }}>Enviamos um e-mail — confirme-o antes de entrar.</Typography>
                                     </Grid>
                                     <Grid size={12} sx={{ mb: 0, pb: 1 }}>
-                                        <Typography variant='subtitle2'>It's OK to close this window. The email will have a link back here.</Typography>
+                                        <Typography variant='subtitle2'>Pode fechar esta janela. O e-mail terá um link de volta para cá.</Typography>
                                     </Grid>
                                     <Grid size={12} sx={{ mb: 0, pb: 1 }}>
-                                        <Typography variant='body2'>NOTE - if you are signing up on a self-hosted instance, there is no email verification. Just click the link below and sign in.</Typography>
+                                        <Typography variant='body2'>OBS: em instância self-hosted não há verificação de e-mail. Clique no link abaixo e entre.</Typography>
                                     </Grid>
                                     <Grid size={12} sx={{ mb: 0, pb: 1 }}>
-                                        <Typography variant='body2' display='inline'>Otherwise, click <Button sx={{ m: 0, p: 0 }} size='small' onClick={handleRedirectSignUp}>HERE</Button> to go to the sign in page.</Typography>
+                                        <Typography variant='body2' display='inline'>Caso contrário, clique <Button sx={{ m: 0, p: 0 }} size='small' onClick={handleRedirectSignUp}>AQUI</Button> para ir à página de login.</Typography>
 
                                     </Grid>
                                 </>
                                 :
                                 <>
                                     <Grid size={12} sx={{ mb: 0, pb: 1 }}>
-                                        <Typography variant='body2'>Sign up to continue.</Typography>
+                                        <Typography variant='body2'>Cadastre-se para continuar.</Typography>
                                     </Grid>
                                     <Grid size={12}>
                                         <TextField
@@ -206,7 +206,7 @@ export default function SignUpPage() {
                                             name="fullName"
                                             type="text"
                                             autoFocus
-                                            label="Full Name"
+                                            label="Nome Completo"
                                             value={fullName}
                                             onChange={(e) => setFullName(e.target.value)}
                                         />
@@ -219,7 +219,7 @@ export default function SignUpPage() {
                                             helperText={emailText}
                                             autoFocus
                                             error={emailText.length > 0}
-                                            label="Email"
+                                            label="E-mail"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                         />
@@ -229,7 +229,7 @@ export default function SignUpPage() {
                                             fullWidth
                                             name="password"
                                             type={showPassword ? 'text' : 'password'}
-                                            label="Password"
+                                            label="Senha"
                                             helperText={passwordText}
                                             error={passwordText.length > 0}
                                             value={password}
@@ -237,7 +237,7 @@ export default function SignUpPage() {
                                                 input: {
                                                     endAdornment: <InputAdornment position="end">
                                                         <IconButton
-                                                            aria-label="toggle password visibility"
+                                                            aria-label="mostrar/ocultar senha"
                                                             onClick={handleClickShowPassword}
                                                             onMouseDown={handleMouseDownPassword}
                                                             edge="end"
@@ -255,7 +255,7 @@ export default function SignUpPage() {
                                             fullWidth
                                             name="password1"
                                             type={showPassword ? 'text' : 'password'}
-                                            label="Confirm Password"
+                                            label="Confirmar Senha"
                                             helperText={passwordText1}
                                             error={password !== password1}
                                             value={password1}
@@ -263,7 +263,7 @@ export default function SignUpPage() {
                                                 input: {
                                                     endAdornment: <InputAdornment position="end">
                                                         <IconButton
-                                                            aria-label="toggle password visibility"
+                                                            aria-label="mostrar/ocultar senha"
                                                             onClick={handleClickShowPassword}
                                                             onMouseDown={handleMouseDownPassword}
                                                             edge="end"
@@ -278,11 +278,11 @@ export default function SignUpPage() {
                                     </Grid>
                                     <Grid size={12}>
                                         <Typography color='error' variant='subtitle2'>{errorText}</Typography>
-                                        <Button color='secondary' fullWidth variant='contained' disabled={!validateForm()} type='submit' sx={{ mt: 1 }}>Sign Up</Button>
+                                        <Button color='secondary' fullWidth variant='contained' disabled={!validateForm()} type='submit' sx={{ mt: 1 }}>Cadastre-se</Button>
                                     </Grid>
                                     <Grid size={12}>
-                                        <Typography display='inline' variant='body2'>Already have an account? </Typography>
-                                        <Button size='small' onClick={handleRedirectSignUp}>Sign In</Button>
+                                        <Typography display='inline' variant='body2'>Já tem conta? </Typography>
+                                        <Button size='small' onClick={handleRedirectSignUp}>Entrar</Button>
                                     </Grid>
                                 </>
                             }

@@ -25,9 +25,9 @@ import SearchOffIcon from '@mui/icons-material/SearchOff';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { CARD_ELEVATION, cardSx, rowHoverSx } from "./subcomponents/uiStyles";
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 
 export default function TransactionsPage() {
@@ -124,7 +124,7 @@ export default function TransactionsPage() {
                     <Grid size={12} container columnSpacing={1} alignItems='center' sx={{ width: '100%' }}>
                         <Grid size={1.3}>
                             <Avatar sx={{ ml: -1, fontSize: 15, textAlign: 'center', bgcolor: 'text.secondary' }}>
-                                {dayjs(row.transactionDate).format('MMM DD')}
+                                {dayjs(row.transactionDate).locale('pt-br').format('DD MMM')}
                             </Avatar>
                         </Grid>
                         <Grid size='grow'>
@@ -159,13 +159,13 @@ export default function TransactionsPage() {
                     <Grid size={12} container columnSpacing={1} alignItems='center' sx={{ width: '100%' }}>
                         <Grid size={1.3}>
                             <Avatar sx={{ ml: -1, fontSize: 15, textAlign: 'center', bgcolor: 'text.secondary' }}>
-                                {dayjs(row.transactionDate).format('MMM DD')}
+                                {dayjs(row.transactionDate).locale('pt-br').format('DD MMM')}
                             </Avatar>
                         </Grid>
                         <Grid size='auto' sx={{ flexGrow: 1 }}>
                             <Typography sx={{ mt: 0.5 }} style={{ overflow: "hidden", textOverflow: "ellipsis" }}
                                 variant='body1'>{row.title}</Typography>
-                            <Chip size='small' label='Uncategorized' color='warning' />
+                            <Chip size='small' label='Sem categoria' color='warning' />
                         </Grid>
                         <Grid size='auto' sx={{ textAlign: 'right' }}>
                             <Typography color={row.transactionType === 'expense' ? 'error.light' : 'success.light'} style={{ overflow: "hidden", textOverflow: "ellipsis" }} display='inline'
@@ -188,11 +188,11 @@ export default function TransactionsPage() {
     };
 
     const sections: SectionConfig[] = [
-        { key: 'upcoming', label: 'Upcoming', transactions: upcomingTransactions, expanded: upcomingExpanded, setExpanded: setUpcomingExpanded, storageKey: 'txUpcomingExpanded', color: 'success' },
-        { key: 'today', label: 'Today', transactions: todayTransactions, expanded: todayExpanded, setExpanded: setTodayExpanded, storageKey: 'txTodayExpanded' },
-        { key: 'yesterday', label: 'Yesterday', transactions: yesterdayTransactions, expanded: yesterdayExpanded, setExpanded: setYesterdayExpanded, storageKey: 'txYesterdayExpanded' },
-        { key: 'lastWeek', label: 'Last Week', transactions: lastWeekTransactions, expanded: lastWeekExpanded, setExpanded: setLastWeekExpanded, storageKey: 'txLastWeekExpanded' },
-        { key: 'earlier', label: 'Earlier', transactions: earlierTransactions, expanded: earlierExpanded, setExpanded: setEarlierExpanded, storageKey: 'txEarlierExpanded' },
+        { key: 'upcoming', label: 'Próximas', transactions: upcomingTransactions, expanded: upcomingExpanded, setExpanded: setUpcomingExpanded, storageKey: 'txUpcomingExpanded', color: 'success' },
+        { key: 'today', label: 'Hoje', transactions: todayTransactions, expanded: todayExpanded, setExpanded: setTodayExpanded, storageKey: 'txTodayExpanded' },
+        { key: 'yesterday', label: 'Ontem', transactions: yesterdayTransactions, expanded: yesterdayExpanded, setExpanded: setYesterdayExpanded, storageKey: 'txYesterdayExpanded' },
+        { key: 'lastWeek', label: 'Semana Passada', transactions: lastWeekTransactions, expanded: lastWeekExpanded, setExpanded: setLastWeekExpanded, storageKey: 'txLastWeekExpanded' },
+        { key: 'earlier', label: 'Anteriores', transactions: earlierTransactions, expanded: earlierExpanded, setExpanded: setEarlierExpanded, storageKey: 'txEarlierExpanded' },
     ];
 
     return (
@@ -205,7 +205,7 @@ export default function TransactionsPage() {
                         value={searchText}
                         onChange={(event: any) => setText(event)}
                         type="search"
-                        label="Search Transactions"
+                        label="Buscar Transações"
                         slotProps={{
                             input: {
                                 startAdornment: (
@@ -220,14 +220,14 @@ export default function TransactionsPage() {
                     {transactionsArray.length === 0 ? (
                         <EmptyState
                             icon={<ReceiptLongIcon />}
-                            title='No transactions yet'
-                            description='Transactions you add will show up here, grouped by date.'
+                            title='Nenhuma transação ainda'
+                            description='As transações que você adicionar aparecerão aqui, agrupadas por data.'
                         />
                     ) : filteredTransactions.length === 0 ? (
                         <EmptyState
                             icon={<SearchOffIcon />}
-                            title='No matches'
-                            description={`Nothing matched "${searchText.trim()}". Try a different search.`}
+                            title='Nenhum resultado'
+                            description={`Nada encontrado para "${searchText.trim()}". Tente outra busca.`}
                         />
                     ) : (
                         <>
@@ -248,7 +248,7 @@ export default function TransactionsPage() {
                                     >
                                         {uncategorizedExpanded ? <ExpandLessIcon fontSize="small" color="warning" /> : <ExpandMoreIcon fontSize="small" color="warning" />}
                                         <Typography variant="body2" color="warning.main" sx={{ ml: 0.5, fontWeight: 600 }}>
-                                            Uncategorized ({uncategorizedTransactions.length})
+                                            Sem categoria ({uncategorizedTransactions.length})
                                         </Typography>
                                     </Box>
                                     <Collapse in={uncategorizedExpanded}>

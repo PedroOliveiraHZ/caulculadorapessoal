@@ -21,8 +21,8 @@ export default defineConfig({
             },
             manifest: {
                 short_name: 'simpleBudget',
-                name: 'simpleBudget: Keep on track for your goals!',
-                description: "It's a simple budget to track your in vs out.",
+                name: 'simpleBudget: orçamento e meta do apartamento',
+                description: 'Controle de receitas e despesas com meta de economia mensal.',
                 icons: [
                     {
                         src: 'favicon.ico',

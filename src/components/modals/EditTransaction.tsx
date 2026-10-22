@@ -71,11 +71,11 @@ export default function EditTransaction() {
     async function handleDoubleCheck() {
         setDeleteTrans(true)
         setAnchorEl(null);
-        let transDetails = 'Title: '
+        let transDetails = 'Título: '
         if (currentTransactionDetails !== undefined) {
             transDetails = transDetails + currentTransactionDetails.title
         }
-        setCheckTitle('Are you sure you want to delete this transaction?')
+        setCheckTitle('Tem certeza que deseja excluir esta transação?')
         setCheckDetails(transDetails)
         setAreYouSureOpen(true)
     }
@@ -110,22 +110,22 @@ export default function EditTransaction() {
             setOpenEditTransaction(false)
             setLoadingOpen(false)
             setSnackSev('success')
-            setSnackText('Transaction deleted')
+            setSnackText('Transação excluída')
             setSnackOpen(true)
             setCheckAccept(false)
             setDeleteTrans(false)
         } catch (err: any) {
             setLoadingOpen(false)
-            setErrorText(err.message || 'Network error — try again when online')
+            setErrorText(err.message || 'Erro de rede — tente novamente quando estiver online')
         }
     }
     const verifyInputs = () => {
         if (transactionTitle === '' || transactionTitle === null) {
-            setErrorText('Please enter a title')
+            setErrorText('Informe um título')
             return false
         }
         if (transactionDate === null) {
-            setErrorText('Please enter a date')
+            setErrorText('Informe uma data')
             return false
         }
         return true
@@ -170,11 +170,11 @@ export default function EditTransaction() {
                 setOpenEditTransaction(false)
                 setLoadingOpen(false)
                 setSnackSev('success')
-                setSnackText('Transaction updated!')
+                setSnackText('Transação atualizada!')
                 setSnackOpen(true)
             } catch (err: any) {
                 setLoadingOpen(false)
-                setErrorText(err.message || 'Network error — try again when online')
+                setErrorText(err.message || 'Erro de rede — tente novamente quando estiver online')
             }
         }
     }
@@ -210,7 +210,7 @@ export default function EditTransaction() {
                             >
                                 <MoreVertIcon />
                             </IconButton>
-                            <div>Edit Transaction</div>
+                            <div>Editar Transação</div>
                         </Stack>
                         <IconButton onClick={() => setOpenEditTransaction(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
@@ -234,7 +234,7 @@ export default function EditTransaction() {
                     </DialogContent>
                     {errorText && <Box sx={{ mx: 2, mt: 1 }}><Typography color='error' variant='body2'>{errorText}</Typography></Box>}
                     <DialogActions sx={{ position: 'sticky', bottom: 0, bgcolor: 'background.paper', borderTop: '1px solid', borderColor: 'divider', px: 2, py: 1.5 }}>
-                        <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit' disabled={offline}>Save Changes</Button>
+                        <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit' disabled={offline}>Salvar Alterações</Button>
                     </DialogActions>
                 </Box>
             </Dialog>
@@ -251,7 +251,7 @@ export default function EditTransaction() {
             >
                 <MenuItem onClick={handleDoubleCheck} disabled={offline}>
                     <DeleteIcon />
-                    Delete
+                    Excluir
                 </MenuItem>
             </Menu>
         </>

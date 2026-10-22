@@ -150,11 +150,11 @@ export default function SettingsPage() {
                     }
                 }
                 setSnackSev('success');
-                setSnackText('Notifications enabled');
+                setSnackText('Notificações ativadas');
                 setSnackOpen(true);
             } else {
                 setSnackSev('warning');
-                setSnackText('Notification permission denied by browser');
+                setSnackText('Permissão de notificação negada pelo navegador');
                 setSnackOpen(true);
             }
         } else {
@@ -165,7 +165,7 @@ export default function SettingsPage() {
                 useNotificationStore.getState().setPushEnabled(false);
             }
             setSnackSev('success');
-            setSnackText('Notifications disabled');
+            setSnackText('Notificações desativadas');
             setSnackOpen(true);
         }
     };
@@ -173,18 +173,18 @@ export default function SettingsPage() {
     const handleFixPermission = async () => {
         if (Notification.permission === 'denied') {
             setSnackSev('info');
-            setSnackText('Please enable notifications in your device/browser settings');
+            setSnackText('Ative as notificações nas configurações do dispositivo/navegador');
             setSnackOpen(true);
         } else {
             const granted = await requestNotificationPermission();
             if (granted) {
                 setPermissionMismatch(false);
                 setSnackSev('success');
-                setSnackText('Notifications re-enabled!');
+                setSnackText('Notificações reativadas!');
                 setSnackOpen(true);
             } else {
                 setSnackSev('warning');
-                setSnackText('Permission denied — enable in device settings');
+                setSnackText('Permissão negada — ative nas configurações do dispositivo');
                 setSnackOpen(true);
             }
         }
@@ -193,13 +193,13 @@ export default function SettingsPage() {
     const handleUpgrade = async () => {
         setCheckoutLoading(true);
         try { await redirectToCheckout(); }
-        catch (err: any) { setSnackSev('error'); setSnackText(err.message || 'Failed to start checkout'); setSnackOpen(true); setCheckoutLoading(false); }
+        catch (err: any) { setSnackSev('error'); setSnackText(err.message || 'Falha ao iniciar o pagamento'); setSnackOpen(true); setCheckoutLoading(false); }
     };
 
     const handleManageBilling = async () => {
         setBillingLoading(true);
         try { await redirectToBillingPortal(); }
-        catch (err: any) { setSnackSev('error'); setSnackText(err.message || 'Failed to open billing portal'); setSnackOpen(true); setBillingLoading(false); }
+        catch (err: any) { setSnackSev('error'); setSnackText(err.message || 'Falha ao abrir o portal de cobrança'); setSnackOpen(true); setBillingLoading(false); }
     };
 
     const handleThemeToggle = () => {
@@ -209,7 +209,7 @@ export default function SettingsPage() {
         setTheme(mode);
         localStorage.setItem('userTheme', mode);
         setSnackSev('success');
-        setSnackText(newDark ? 'Dark mode activated!' : 'Set to light mode.');
+        setSnackText(newDark ? 'Modo escuro ativado!' : 'Modo claro ativado.');
         setSnackOpen(true);
     };
 
@@ -266,13 +266,13 @@ export default function SettingsPage() {
             console.log(error)
             setLoadingOpen(false)
             setSnackSev('error')
-            setSnackText('Something went wrong')
+            setSnackText('Algo deu errado')
             setSnackOpen(true)
             return
         }
         setLoadingOpen(false)
         setSnackSev('success')
-        setSnackText('Budget deleted')
+        setSnackText('Orçamento excluído')
         setSnackOpen(true)
     }
 
@@ -284,8 +284,8 @@ export default function SettingsPage() {
     const copyUserID = async () => {
         await navigator.clipboard
             .writeText(currentUserDetails.recordID)
-            .then(() => { setSnackSev('success'); setSnackText('User ID copied'); setSnackOpen(true); })
-            .catch(() => { setSnackSev('error'); setSnackText('Something went wrong'); setSnackOpen(true); });
+            .then(() => { setSnackSev('success'); setSnackText('ID de usuário copiado'); setSnackOpen(true); })
+            .catch(() => { setSnackSev('error'); setSnackText('Algo deu errado'); setSnackOpen(true); });
     };
 
     const shareAppLink = async () => {
@@ -296,8 +296,8 @@ export default function SettingsPage() {
             } catch { /* cancelled */ }
         } else {
             await navigator.clipboard.writeText(appUrl)
-                .then(() => { setSnackSev('success'); setSnackText('App link copied!'); setSnackOpen(true); })
-                .catch(() => { setSnackSev('error'); setSnackText('Failed to copy link'); setSnackOpen(true); });
+                .then(() => { setSnackSev('success'); setSnackText('Link do app copiado!'); setSnackOpen(true); })
+                .catch(() => { setSnackSev('error'); setSnackText('Falha ao copiar o link'); setSnackOpen(true); });
         }
     };
 
@@ -308,8 +308,8 @@ export default function SettingsPage() {
     }
 
     const subscriptionLabel = subscriptionState === 'active' ? 'Pro'
-        : subscriptionState === 'trialing' ? 'Trial'
-            : subscriptionState === 'canceling' ? 'Canceling' : 'Free';
+        : subscriptionState === 'trialing' ? 'Teste'
+            : subscriptionState === 'canceling' ? 'Cancelando' : 'Grátis';
     const subscriptionColor: 'success' | 'info' | 'warning' | 'default' =
         subscriptionState === 'active' ? 'success'
             : subscriptionState === 'trialing' ? 'info'
@@ -341,7 +341,7 @@ export default function SettingsPage() {
                             </Avatar>
                             <Box sx={{ flex: 1, minWidth: 0 }}>
                                 <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.2 }} noWrap>
-                                    {currentUserDetails.fullName || 'User'}
+                                    {currentUserDetails.fullName || 'Usuário'}
                                 </Typography>
                             </Box>
                         </Box>
@@ -352,7 +352,7 @@ export default function SettingsPage() {
                                 onClick={() => setQrOpen(true)} disabled={!hasPro}
                                 sx={{ textTransform: 'none', borderRadius: 2, flex: 1 }}
                             >
-                                My QR Code
+                                Meu QR Code
                             </Button>
                             <Button
                                 variant="outlined" startIcon={<LogoutIcon />}
@@ -360,7 +360,7 @@ export default function SettingsPage() {
                                 color="error"
                                 sx={{ textTransform: 'none', borderRadius: 2, flex: 1 }}
                             >
-                                Log Out
+                                Sair
                             </Button>
                         </Stack>
                     </Paper>
@@ -377,38 +377,38 @@ export default function SettingsPage() {
                         }}>
                             <StarIcon sx={{ color: theme.palette.primary.main, fontSize: 28 }} />
                             <Box sx={{ flex: 1 }}>
-                                <Typography variant="body1" sx={{ fontWeight: 700 }}>Upgrade to Pro</Typography>
-                                <Typography variant="caption" color="text.secondary">Unlock exports, sharing & more</Typography>
+                                <Typography variant="body1" sx={{ fontWeight: 700 }}>Assinar o Pro</Typography>
+                                <Typography variant="caption" color="text.secondary">Desbloqueie exportação, compartilhamento e mais</Typography>
                             </Box>
                             <Button
                                 variant="contained" onClick={handleUpgrade}
                                 disabled={offline || checkoutLoading}
                                 sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600 }}
                             >
-                                {checkoutLoading ? 'Loading...' : 'Upgrade'}
+                                {checkoutLoading ? 'Carregando...' : 'Assinar'}
                             </Button>
                         </Paper>
                     )}
                     {subscriptionState === 'canceling' && (
                         <Alert severity="info" sx={{ borderRadius: 3 }}>
-                            Plan active until {entitlement?.current_period_end
+                            Plano ativo até {entitlement?.current_period_end
                                 ? new Date(entitlement.current_period_end).toLocaleDateString()
-                                : 'end of billing period'}
+                                : 'fim do período de cobrança'}
                         </Alert>
                     )}
 
                     {/* ─── Preferences Card ─── */}
                     <Paper elevation={4} sx={{ borderRadius: 4, p: 3 }}>
                         <Typography color="text.secondary" variant="subtitle2" sx={{ fontWeight: 800, mb: 2.5, textTransform: 'uppercase' }}>
-                            Preferences
+                            Preferências
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                                 <DarkModeIcon sx={{ color: theme.palette.mode === 'dark' ? '#90caf9' : '#5c6bc0', fontSize: 22 }} />
                                 <Box>
-                                    <Typography variant="body2" sx={{ fontWeight: 600 }}>Dark Mode</Typography>
-                                    <Typography variant="caption" color="text.secondary">Easier on the eyes</Typography>
+                                    <Typography variant="body2" sx={{ fontWeight: 600 }}>Modo Escuro</Typography>
+                                    <Typography variant="caption" color="text.secondary">Mais confortável para os olhos</Typography>
                                 </Box>
                             </Box>
                             <Switch size="small" checked={slideCheck} onChange={handleThemeToggle} />
@@ -421,8 +421,8 @@ export default function SettingsPage() {
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                                         <NotificationsIcon sx={{ color: '#f57c00', fontSize: 22 }} />
                                         <Box>
-                                            <Typography variant="body2" sx={{ fontWeight: 600 }}>Transaction Notifications</Typography>
-                                            <Typography variant="caption" color="text.secondary">Daily reminders for tomorrow's transactions</Typography>
+                                            <Typography variant="body2" sx={{ fontWeight: 600 }}>Notificações de Transações</Typography>
+                                            <Typography variant="caption" color="text.secondary">Lembretes diários das transações de amanhã</Typography>
                                         </Box>
                                     </Box>
                                     <Switch size="small" checked={notificationsEnabled} onChange={handleNotificationsToggle} />
@@ -433,11 +433,11 @@ export default function SettingsPage() {
                                         sx={{ borderRadius: 2, mt: 2 }}
                                         action={
                                             <Button color="inherit" onClick={handleFixPermission}>
-                                                {Notification.permission === 'denied' ? 'How to fix' : 'Allow'}
+                                                {Notification.permission === 'denied' ? 'Como resolver' : 'Permitir'}
                                             </Button>
                                         }
                                     >
-                                        Notifications blocked at system level
+                                        Notificações bloqueadas pelo sistema
                                     </Alert>
                                 )}
                             </>
@@ -448,7 +448,7 @@ export default function SettingsPage() {
                     <Paper elevation={4} sx={{ borderRadius: 4, p: 3 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2.5 }}>
                             <Typography color="text.secondary" variant="subtitle2" sx={{ fontWeight: 800, textTransform: 'uppercase' }}>
-                                Account
+                                Conta
                             </Typography>
                             <Chip
                                 label={subscriptionLabel}
@@ -466,7 +466,7 @@ export default function SettingsPage() {
                                     onClick={handleManageBilling} disabled={offline || billingLoading}
                                     sx={{ justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, py: 1.2 }}
                                 >
-                                    {billingLoading ? 'Redirecting...' : 'Manage Subscription'}
+                                    {billingLoading ? 'Redirecionando...' : 'Gerenciar Assinatura'}
                                 </Button>
                             )}
                             <Button
@@ -475,7 +475,7 @@ export default function SettingsPage() {
                                 onClick={() => setOpenChangePassword(true)} disabled={offline}
                                 sx={{ justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, py: 1.2 }}
                             >
-                                Change Password
+                                Alterar Senha
                             </Button>
                         </Stack>
                     </Paper>
@@ -484,7 +484,7 @@ export default function SettingsPage() {
                     <Paper elevation={4} sx={{ borderRadius: 4, p: 3 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2.5 }}>
                             <Typography color="text.secondary" variant="subtitle2" sx={{ fontWeight: 800, textTransform: 'uppercase' }}>
-                                {'Budget: ' + (currentBudgetDetails?.budgetName || '')}
+                                {'Orçamento: ' + (currentBudgetDetails?.budgetName || '')}
                             </Typography>
                             {budgetSharedUsers.length > 0 && (
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -506,7 +506,7 @@ export default function SettingsPage() {
                                 onClick={() => setSelectBudgetOpen(true)}
                                 sx={{ justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, py: 1.2 }}
                             >
-                                Switch Budgets
+                                Trocar Orçamento
                             </Button>
                             <Button
                                 variant="outlined" fullWidth startIcon={hasPro ? <DownloadIcon /> : <LockIcon />}
@@ -514,7 +514,7 @@ export default function SettingsPage() {
                                 onClick={() => setExportToCSV(true)} disabled={offline || !hasPro}
                                 sx={{ justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, py: 1.2 }}
                             >
-                                Export Data to CSV
+                                Exportar Dados para CSV
                                 {!hasPro && <Chip label="Pro" size="small" variant="outlined" sx={{ ml: 'auto' }} />}
                             </Button>
                             <Button
@@ -523,7 +523,7 @@ export default function SettingsPage() {
                                 onClick={() => setShareBudgetOpen(true)} disabled={offline || !hasPro}
                                 sx={{ justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, py: 1.2 }}
                             >
-                                Share Budget
+                                Compartilhar Orçamento
                                 {!hasPro && <Chip label="Pro" size="small" variant="outlined" sx={{ ml: 'auto' }} />}
                             </Button>
                             <Button
@@ -532,7 +532,7 @@ export default function SettingsPage() {
                                 onClick={handleOpenDeleteDialog} disabled={offline}
                                 sx={{ justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, py: 1.2 }}
                             >
-                                Delete Budget
+                                Excluir Orçamento
                             </Button>
                         </Stack>
                     </Paper>
@@ -540,7 +540,7 @@ export default function SettingsPage() {
                     {/* ─── Support Card ─── */}
                     <Paper elevation={4} sx={{ borderRadius: 4, p: 3 }}>
                         <Typography color="text.secondary" variant="subtitle2" sx={{ fontWeight: 800, mb: 2.5, textTransform: 'uppercase' }}>
-                            Support
+                            Suporte
                         </Typography>
 
                         <Stack direction={bigger ? "row" : "column"} spacing={1.5}>
@@ -550,7 +550,7 @@ export default function SettingsPage() {
                                 component="a" href="https://simplesuite.dev/guides" target="_blank" rel="noopener noreferrer"
                                 sx={{ textTransform: 'none', textDecoration: 'none' }}
                             >
-                                Guides
+                                Guias
                             </Button>
                             <Button
                                 color="primary"
@@ -558,7 +558,7 @@ export default function SettingsPage() {
                                 component="a" href="https://github.com/simplesuite/simplebudget/issues" target="_blank" rel="noopener noreferrer"
                                 sx={{ textTransform: 'none', textDecoration: 'none' }}
                             >
-                                Report Bug
+                                Reportar Bug
                             </Button>
                             <Button
                                 color="primary"
@@ -566,7 +566,7 @@ export default function SettingsPage() {
                                 onClick={shareAppLink}
                                 sx={{ textTransform: 'none' }}
                             >
-                                Share App
+                                Compartilhar App
                             </Button>
                         </Stack>
                     </Paper>
@@ -585,7 +585,7 @@ export default function SettingsPage() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }} component="form" onSubmit={() => { copyUserID(); setQrOpen(false); }}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        My User ID<IconButton onClick={() => setQrOpen(false)}><CloseIcon /></IconButton>
+                        Meu ID de Usuário<IconButton onClick={() => setQrOpen(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <DialogContent sx={{ textAlign: 'center', pb: 3 }} dividers>
                         <QRCodeSVG value={currentUserDetails.recordID} size={200} />
@@ -594,7 +594,7 @@ export default function SettingsPage() {
                         </Typography>
                         <DialogActions>
                             <Button sx={{ mt: 1 }} fullWidth variant="contained" type="submit" startIcon={<ContentCopyIcon />}>
-                                Copy to Clipboard
+                                Copiar
                             </Button>
                         </DialogActions>
                     </DialogContent>
@@ -610,15 +610,15 @@ export default function SettingsPage() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        Delete Budget
+                        Excluir Orçamento
                         <IconButton onClick={handleCloseDeleteDialog}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
-                            This will permanently delete all sections, categories, and transactions assigned to this budget. This cannot be undone.
+                            Isso excluirá permanentemente todas as seções, categorias e transações deste orçamento. Não é possível desfazer.
                         </Alert>
                         <Typography variant="body2" sx={{ mb: 2 }}>
-                            To confirm, type <strong>{currentBudgetDetails?.budgetName}</strong> below:
+                            Para confirmar, digite <strong>{currentBudgetDetails?.budgetName}</strong> abaixo:
                         </Typography>
                         <TextField
                             autoFocus
@@ -632,7 +632,7 @@ export default function SettingsPage() {
                     </DialogContent>
                     <DialogActions sx={{ px: 3, pb: 2 }}>
                         <Button onClick={handleCloseDeleteDialog} sx={{ textTransform: 'none', borderRadius: 2 }}>
-                            Cancel
+                            Cancelar
                         </Button>
                         <Button
                             variant="contained"
@@ -641,7 +641,7 @@ export default function SettingsPage() {
                             onClick={handleDelete}
                             sx={{ textTransform: 'none', borderRadius: 2 }}
                         >
-                            Delete Budget
+                            Excluir Orçamento
                         </Button>
                     </DialogActions>
                 </Box>

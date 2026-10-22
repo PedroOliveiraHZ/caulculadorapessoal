@@ -25,9 +25,9 @@ import CategoryIcon from '@mui/icons-material/Category';
 import EmptyState from "./EmptyState";
 import { CARD_ELEVATION, cardSx, rowHoverSx } from "./uiStyles";
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -126,7 +126,7 @@ export default function BudgetSection(sectionID: any) {
                                 label={
                                     isIncome
                                         ? `${formatter.format(sectionUsed)} / ${formatter.format(sectionPlanned)}`
-                                        : `${formatter.format(sectionRemaining)} left`
+                                        : `${formatter.format(sectionRemaining)} restante`
                                 }
                                 sx={{
                                     flexShrink: 0,
@@ -183,10 +183,10 @@ export default function BudgetSection(sectionID: any) {
                                                 {/* Line 2: spent-of-planned + percent */}
                                                 <Box display='flex' alignItems='baseline' justifyContent='space-between' gap={1} sx={{ mt: 0.25, mb: 0.5 }}>
                                                     <Typography variant='caption' color='text.secondary' sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>
-                                                        {formatter.format(used)} {isIncome ? 'earned of' : 'spent of'} {formatter.format(row.amount)}
+                                                        {formatter.format(used)} {isIncome ? 'recebido de' : 'gasto de'} {formatter.format(row.amount)}
                                                     </Typography>
                                                     <Typography variant='caption' sx={{ flexShrink: 0 }} color={over ? 'error.main' : 'text.secondary'}>
-                                                        {Math.round(Math.max(pct, 0))}% {isIncome ? 'earned' : 'used'}
+                                                        {Math.round(Math.max(pct, 0))}% {isIncome ? 'recebido' : 'usado'}
                                                     </Typography>
                                                 </Box>
                                                 {/* Line 3: progress bar */}
@@ -205,13 +205,13 @@ export default function BudgetSection(sectionID: any) {
                         <EmptyState
                             dense
                             icon={<CategoryIcon />}
-                            title='No categories yet'
-                            description={`Add a category to start ${isIncome ? 'planning income' : 'budgeting spending'} here.`}
+                            title='Nenhuma categoria ainda'
+                            description={`Adicione uma categoria para começar a ${isIncome ? 'planejar receitas' : 'orçar gastos'} aqui.`}
                         />
                     )}
 
                     <Box display='flex' justifyContent='space-between' sx={{ mx: 0.5, mb: 0 }}>
-                        <Button size='small' variant='text' startIcon={<PlaylistAddIcon />} onClick={openAddCategory}>Add Category</Button>
+                        <Button size='small' variant='text' startIcon={<PlaylistAddIcon />} onClick={openAddCategory}>Nova Categoria</Button>
                         <IconButton sx={{ ml: 2 }} onClick={openSection} size='small'><MoreHorizIcon /></IconButton>
                     </Box>
                 </Box>

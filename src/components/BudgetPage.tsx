@@ -1,3 +1,4 @@
+import MetaResumo from './subcomponents/MetaResumo';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import Stack from "@mui/material/Stack";
@@ -64,9 +65,9 @@ import Tooltip from '@mui/material/Tooltip';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useIsPwa } from "../lib/useIsPwa";
 
-const formatter = new Intl.NumberFormat('en-US', {
+const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'BRL',
 });
 
 export default function BudgetPage() {
@@ -170,17 +171,17 @@ export default function BudgetPage() {
     });
 
     const sidebarDateSections: { key: string; label: string; transactions: typeof sidebarTransactions; expanded: boolean; setExpanded: (v: boolean) => void; storageKey: string; color?: string }[] = [
-        { key: 'upcoming', label: 'Upcoming', transactions: sidebarUpcoming, expanded: sbUpcomingExpanded, setExpanded: setSbUpcomingExpanded, storageKey: 'sbUpcomingExpanded', color: 'success' },
-        { key: 'today', label: 'Today', transactions: sidebarTodayTx, expanded: sbTodayExpanded, setExpanded: setSbTodayExpanded, storageKey: 'sbTodayExpanded' },
-        { key: 'yesterday', label: 'Yesterday', transactions: sidebarYesterdayTx, expanded: sbYesterdayExpanded, setExpanded: setSbYesterdayExpanded, storageKey: 'sbYesterdayExpanded' },
-        { key: 'lastWeek', label: 'Last Week', transactions: sidebarLastWeekTx, expanded: sbLastWeekExpanded, setExpanded: setSbLastWeekExpanded, storageKey: 'sbLastWeekExpanded' },
-        { key: 'earlier', label: 'Earlier', transactions: sidebarEarlierTx, expanded: sbEarlierExpanded, setExpanded: setSbEarlierExpanded, storageKey: 'sbEarlierExpanded' },
+        { key: 'upcoming', label: 'Próximas', transactions: sidebarUpcoming, expanded: sbUpcomingExpanded, setExpanded: setSbUpcomingExpanded, storageKey: 'sbUpcomingExpanded', color: 'success' },
+        { key: 'today', label: 'Hoje', transactions: sidebarTodayTx, expanded: sbTodayExpanded, setExpanded: setSbTodayExpanded, storageKey: 'sbTodayExpanded' },
+        { key: 'yesterday', label: 'Ontem', transactions: sidebarYesterdayTx, expanded: sbYesterdayExpanded, setExpanded: setSbYesterdayExpanded, storageKey: 'sbYesterdayExpanded' },
+        { key: 'lastWeek', label: 'Semana Passada', transactions: sidebarLastWeekTx, expanded: sbLastWeekExpanded, setExpanded: setSbLastWeekExpanded, storageKey: 'sbLastWeekExpanded' },
+        { key: 'earlier', label: 'Anteriores', transactions: sidebarEarlierTx, expanded: sbEarlierExpanded, setExpanded: setSbEarlierExpanded, storageKey: 'sbEarlierExpanded' },
     ];
 
     const handleMonthChange = (newValue: any) => {
         if (!newValue) return;
         const year = Number(newValue.format('YYYY'));
-        const month = newValue.format('MMMM');
+        const month = newValue.locale('en').format('MMMM');
         setCurrentBudget({
             budgetID: currentBudget.budgetID,
             year,
@@ -353,7 +354,7 @@ export default function BudgetPage() {
                                 <IconButton size='small' onClick={() => handleMonthChange(selectedMonth.subtract(1, 'month'))}>
                                     <ChevronLeftIcon />
                                 </IconButton>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                                     <DatePicker
                                         sx={{ flexGrow: 1 }}
                                         views={['year', 'month']}
@@ -372,6 +373,8 @@ export default function BudgetPage() {
                                 </IconButton>
                             </Box>
                         </Box>
+
+                        <MetaResumo />
 
                         {/* Sentinel: when it scrolls out of view, the net card is pinned */}
                         <Box ref={netSentinelRef} sx={{ height: 0 }} />
@@ -443,23 +446,23 @@ export default function BudgetPage() {
                                             <Box key="planned">
                                                 <Box display='flex' alignItems='center' gap={0.5}>
                                                     <Typography variant='body1' color='text.secondary'>
-                                                        Planned net (budgeted): <strong style={{ color: totalIncome - totalExpenses < 0 ? theme.palette.error.main : theme.palette.success.main }}>
+                                                        Saldo planejado (orçado): <strong style={{ color: totalIncome - totalExpenses < 0 ? theme.palette.error.main : theme.palette.success.main }}>
                                                             {formatter.format(totalIncome - totalExpenses)}
                                                         </strong>
                                                     </Typography>
                                                     <Tooltip
                                                         enterTouchDelay={0}
                                                         leaveTouchDelay={4000}
-                                                        title="What you've budgeted this month: planned income minus planned expenses across all categories. A positive number means you planned to save; negative means you planned to spend more than you earn."
+                                                        title="O que você orçou este mês: receitas planejadas menos despesas planejadas em todas as categorias. Positivo significa que planejou guardar; negativo, que planejou gastar mais do que ganha."
                                                     >
-                                                        <IconButton size='small' sx={{ p: 0.25 }} aria-label="About planned net">
+                                                        <IconButton size='small' sx={{ p: 0.25 }} aria-label="Sobre o saldo planejado">
                                                             <InfoOutlinedIcon fontSize='inherit' color='action' />
                                                         </IconButton>
                                                     </Tooltip>
                                                 </Box>
                                                 <Box display='flex' justifyContent='space-between' alignItems='baseline' sx={{ mb: 0.25 }}>
                                                     <Typography variant='caption' color='text.secondary'>
-                                                        {formatter.format(totalIncome)} in / {formatter.format(totalExpenses)} out
+                                                        {formatter.format(totalIncome)} entrada / {formatter.format(totalExpenses)} saída
                                                     </Typography>
                                                 </Box>
                                                 <LinearProgress
@@ -484,23 +487,23 @@ export default function BudgetPage() {
                                             <Box key="tracked">
                                                 <Box display='flex' alignItems='center' gap={0.5}>
                                                     <Typography variant='body1' color='text.secondary' sx={{ textAlign: 'left' }} >
-                                                        Actual net (so far): <strong style={{ color: totalActualIncome - totalActualExpenses < 0 ? theme.palette.error.main : theme.palette.success.main }}>
+                                                        Saldo real (até agora): <strong style={{ color: totalActualIncome - totalActualExpenses < 0 ? theme.palette.error.main : theme.palette.success.main }}>
                                                             {formatter.format(totalActualIncome - totalActualExpenses)}
                                                         </strong>
                                                     </Typography>
                                                     <Tooltip
                                                         enterTouchDelay={0}
                                                         leaveTouchDelay={4000}
-                                                        title="What has actually happened: real income minus real expenses from the transactions you've logged this month. Compare this against your planned net to see how you're tracking."
+                                                        title="O que realmente aconteceu: receitas reais menos despesas reais das transações lançadas este mês. Compare com o saldo planejado para ver como está indo."
                                                     >
-                                                        <IconButton size='small' sx={{ p: 0.25 }} aria-label="About actual net">
+                                                        <IconButton size='small' sx={{ p: 0.25 }} aria-label="Sobre o saldo real">
                                                             <InfoOutlinedIcon fontSize='inherit' color='action' />
                                                         </IconButton>
                                                     </Tooltip>
                                                 </Box>
                                                 <Box display='flex' justifyContent='space-between' alignItems='baseline' sx={{ mb: 0.25 }}>
                                                     <Typography variant='caption' color='text.secondary'>
-                                                        {formatter.format(totalActualIncome)} in / {formatter.format(totalActualExpenses)} out
+                                                        {formatter.format(totalActualIncome)} entrada / {formatter.format(totalActualExpenses)} saída
                                                     </Typography>
                                                 </Box>
                                                 <LinearProgress
@@ -567,10 +570,10 @@ export default function BudgetPage() {
                                     </Box>
                                     <Box sx={{ flexGrow: 1, minWidth: 0 }}>
                                         <Typography variant='body2' sx={{ fontWeight: 700, color: 'error.main', lineHeight: 1.2 }}>
-                                            {overBudgetCategories.length} {overBudgetCategories.length === 1 ? 'category' : 'categories'} over budget
+                                            {overBudgetCategories.length} {overBudgetCategories.length === 1 ? 'categoria' : 'categorias'} acima do orçamento
                                         </Typography>
                                         <Typography variant='caption' color='text.secondary'>
-                                            {formatter.format(overBudgetTotal)} over plan
+                                            {formatter.format(overBudgetTotal)} acima do plano
                                         </Typography>
                                     </Box>
                                     {overBudgetExpanded ? <ExpandLessIcon color='action' /> : <ExpandMoreIcon color='action' />}
@@ -627,7 +630,7 @@ export default function BudgetPage() {
                         )
                         )}
                         {!(mainLoading && sectionsArray.length === 0) && (
-                            <Button variant='outlined' color='secondary' startIcon={<PostAddIcon />} onClick={async () => { await ensureUserRecord(); setAddNewSection(true); }} disabled={offline}>Add Section</Button>
+                            <Button variant='outlined' color='secondary' startIcon={<PostAddIcon />} onClick={async () => { await ensureUserRecord(); setAddNewSection(true); }} disabled={offline}>Nova Seção</Button>
                         )}
                     </Stack>
                 </Box>
@@ -640,29 +643,29 @@ export default function BudgetPage() {
                                     <Box>
                                         <Typography variant='overline' color='text.secondary'>
                                             {selectedSection?.sectionName}
-                                            {selectedSection?.sectionType === 'income' ? ' · Income' : ' · Expense'}
+                                            {selectedSection?.sectionType === 'income' ? ' · Receita' : ' · Despesa'}
                                         </Typography>
                                         {sidebarEditMode ? (
                                             <Box sx={{ mt: 0.5, mb: 1 }}>
                                                 <TextField size='small' variant='filled' fullWidth
                                                     value={sidebarEditName}
                                                     onChange={(e) => setSidebarEditName(e.target.value)}
-                                                    label="Category Name" sx={{ mb: 1 }} />
+                                                    label="Nome da Categoria" sx={{ mb: 1 }} />
                                                 <TextField size='small' variant='filled' fullWidth type="number"
                                                     value={sidebarEditAmount}
                                                     onChange={(e) => setSidebarEditAmount(Number(e.target.value))}
-                                                    label="Amount"
+                                                    label="Valor"
                                                     slotProps={{
-                                                        input: { startAdornment: <InputAdornment position="start">$</InputAdornment> },
+                                                        input: { startAdornment: <InputAdornment position="start">R$</InputAdornment> },
                                                         htmlInput: { step: 'any' },
                                                     }} />
                                                 <Box display='flex' alignItems='center' gap={0.5} sx={{ mt: 1 }}>
                                                     <HistoryIcon fontSize='small' color='action' />
                                                     <Typography variant='body2' color='text.secondary'>
-                                                        1 month ago: {histLoading ? '...' : oneMonthAgo !== null ? formatter.format(oneMonthAgo) : 'N/A'}
+                                                        1 mês atrás: {histLoading ? '...' : oneMonthAgo !== null ? formatter.format(oneMonthAgo) : '—'}
                                                     </Typography>
                                                     <Typography variant='body2' color='text.secondary' sx={{ ml: 2 }}>
-                                                        1 year ago: {histLoading ? '...' : oneYearAgo !== null ? formatter.format(oneYearAgo) : 'N/A'}
+                                                        1 ano atrás: {histLoading ? '...' : oneYearAgo !== null ? formatter.format(oneYearAgo) : '—'}
                                                     </Typography>
                                                 </Box>
                                                 <Button size='small' fullWidth variant='contained' startIcon={<SaveIcon />}
@@ -672,7 +675,7 @@ export default function BudgetPage() {
                                                         const err = await updateCategory(sidebarEditName, sidebarEditAmount);
                                                         if (!err) setSidebarEditMode(false);
                                                     }}>
-                                                    Save
+                                                    Salvar
                                                 </Button>
                                             </Box>
                                         ) : (
@@ -712,8 +715,8 @@ export default function BudgetPage() {
                                             );
                                         }
                                     }}
-                                    label="Notes"
-                                    placeholder="Add notes for this category..."
+                                    label="Anotações"
+                                    placeholder="Adicione anotações para esta categoria..."
                                     disabled={offline}
                                 />
                             </Box>
@@ -753,7 +756,7 @@ export default function BudgetPage() {
                                                                             <Grid container columnSpacing={1} alignItems='center' sx={{ width: '100%' }}>
                                                                                 <Grid size={1.5}>
                                                                                     <Avatar sx={{ fontSize: 13, textAlign: 'center', bgcolor: 'text.secondary', width: 36, height: 36 }}>
-                                                                                        {dayjs(row.transactionDate).format('MMM DD')}
+                                                                                        {dayjs(row.transactionDate).locale('pt-br').format('DD MMM')}
                                                                                     </Avatar>
                                                                                 </Grid>
                                                                                 <Grid size='grow'>
@@ -779,8 +782,8 @@ export default function BudgetPage() {
                                     <EmptyState
                                         dense
                                         icon={<ReceiptLongIcon />}
-                                        title='No transactions yet'
-                                        description='Transactions in this category will appear here.'
+                                        title='Nenhuma transação ainda'
+                                        description='As transações desta categoria aparecerão aqui.'
                                     />
                                 )}
                             </Box>
@@ -802,8 +805,8 @@ export default function BudgetPage() {
                         >
                             <EmptyState
                                 icon={<TouchAppIcon />}
-                                title='Select a category'
-                                description='Pick a category from your budget to see its details, notes, and recent transactions here.'
+                                title='Selecione uma categoria'
+                                description='Escolha uma categoria do orçamento para ver detalhes, anotações e transações recentes aqui.'
                             />
                         </Paper>
                     </Box>
@@ -820,26 +823,26 @@ export default function BudgetPage() {
                     setSidebarEditAmount(selectedCategory?.amount || 0);
                     setSidebarEditMode(!sidebarEditMode);
                 }}>
-                    <EditIcon sx={{ mr: 1 }} />Edit Category
+                    <EditIcon sx={{ mr: 1 }} />Editar Categoria
                 </MenuItem>
                 <MenuItem onClick={() => { setSidebarAnchorEl(null); balanceCategory(); }} disabled={offline} sx={{ alignItems: 'flex-start', py: 1, maxWidth: 320, whiteSpace: 'normal' }}>
                     <ListItemIcon sx={{ mt: 0.5 }}><BalanceIcon fontSize='small' /></ListItemIcon>
                     <ListItemText
-                        primary='Balance Category'
-                        secondary={`Set the planned amount to match what you've ${currentSectionType === 'income' ? 'earned' : 'spent'} so far (${formatter.format(balanceTarget)}).`}
+                        primary='Equilibrar Categoria'
+                        secondary={`Ajusta o valor planejado para o que você já ${currentSectionType === 'income' ? 'recebeu' : 'gastou'} até agora (${formatter.format(balanceTarget)}).`}
                         secondaryTypographyProps={{ variant: 'caption' }}
                     />
                 </MenuItem>
                 <MenuItem onClick={() => { setSidebarAnchorEl(null); allocateRestOfBudget(); }} disabled={offline} sx={{ alignItems: 'flex-start', py: 1, maxWidth: 320, whiteSpace: 'normal' }}>
                     <ListItemIcon sx={{ mt: 0.5 }}><AccountBalanceWalletIcon fontSize='small' /></ListItemIcon>
                     <ListItemText
-                        primary='Allocate Rest of Budget'
-                        secondary={`Assign all unbudgeted income to this category (${formatter.format(allocateTarget)}).`}
+                        primary='Alocar Restante do Orçamento'
+                        secondary={`Atribui toda a receita ainda não orçada a esta categoria (${formatter.format(allocateTarget)}).`}
                         secondaryTypographyProps={{ variant: 'caption' }}
                     />
                 </MenuItem>
                 <MenuItem onClick={() => { setSidebarAnchorEl(null); setPendingDelete(true); promptDeleteCategory(); }} disabled={offline}>
-                    <DeleteIcon sx={{ mr: 1 }} />Delete Category
+                    <DeleteIcon sx={{ mr: 1 }} />Excluir Categoria
                 </MenuItem>
             </Menu>
             <Menu
@@ -854,7 +857,7 @@ export default function BudgetPage() {
             >
                 <MenuItem onClick={copyBudgetClick} disabled={offline}>
                     <CopyAllIcon sx={{ mr: 1 }} />
-                    Copy budget outline
+                    Copiar estrutura do orçamento
                 </MenuItem>
             </Menu>
             <AddCategory />

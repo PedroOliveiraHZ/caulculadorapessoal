@@ -92,14 +92,14 @@ export default function ForgotPasswordPage() {
                         {submitted ? (
                             <>
                                 <Grid size={12} sx={{ mb: 1 }}>
-                                    <Typography variant='h6' sx={{ fontWeight: 600 }}>Check your email</Typography>
+                                    <Typography variant='h6' sx={{ fontWeight: 600 }}>Verifique seu e-mail</Typography>
                                     <Typography variant='body2' sx={{ mt: 1 }}>
-                                        If an account exists for {email}, you'll receive a password reset link shortly.
+                                        Se existir uma conta para {email}, você receberá em breve um link para redefinir a senha.
                                     </Typography>
                                 </Grid>
                                 <Grid size={12}>
                                     <Button fullWidth variant='contained' onClick={() => navigate('/login', { replace: true })}>
-                                        Back to Sign In
+                                        Voltar para o Login
                                     </Button>
                                 </Grid>
                             </>
@@ -107,7 +107,7 @@ export default function ForgotPasswordPage() {
                             <>
                                 <Grid size={12} sx={{ mb: 0, pb: 1 }}>
                                     <Typography variant='body2'>
-                                        Enter your email and we'll send you a link to reset your password.
+                                        Informe seu e-mail e enviaremos um link para redefinir sua senha.
                                     </Typography>
                                 </Grid>
                                 <Grid size={12}>
@@ -116,7 +116,7 @@ export default function ForgotPasswordPage() {
                                         name="email"
                                         type="email"
                                         autoFocus
-                                        label="Email"
+                                        label="E-mail"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
@@ -132,12 +132,12 @@ export default function ForgotPasswordPage() {
                                         type='submit'
                                         sx={{ mt: 1 }}
                                     >
-                                        Send Reset Link
+                                        Enviar Link
                                     </Button>
                                 </Grid>
                                 <Grid size={12}>
-                                    <Typography display='inline' variant='body2'>Remember your password? </Typography>
-                                    <Button size='small' onClick={() => navigate('/login', { replace: true })}>Sign In</Button>
+                                    <Typography display='inline' variant='body2'>Lembrou a senha? </Typography>
+                                    <Button size='small' onClick={() => navigate('/login', { replace: true })}>Entrar</Button>
                                 </Grid>
                             </>
                         )}

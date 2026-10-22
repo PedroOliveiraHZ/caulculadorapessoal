@@ -30,7 +30,7 @@ export default function AppToolbar() {
     }
 
     const offlineLabel = !isOnline
-        ? (pendingCount > 0 ? `Offline · ${pendingCount} pending` : 'Offline')
+        ? (pendingCount > 0 ? `Offline · ${pendingCount} pendente(s)` : 'Offline')
         : (isSyncing ? `Syncing ${pendingCount}...` : '');
 
     return (

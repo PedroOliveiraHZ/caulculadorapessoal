@@ -49,15 +49,15 @@ export default function CopyBudget() {
 
     const verifyInputs = () => {
         if (fromMonth === null) {
-            setErrorText('Please enter a from month')
+            setErrorText('Informe o mês de origem')
             return false
         }
         if (toMonth === null) {
-            setErrorText('Please enter a to month')
+            setErrorText('Informe o mês de destino')
             return false
         }
-        if (dayjs(toMonth).format('MMMM, YYYY') === dayjs(fromMonth).format('MMMM, YYYY')) {
-            setErrorText('Please select differing months')
+        if (dayjs(toMonth).locale('en').format('MMMM, YYYY') === dayjs(fromMonth).locale('en').format('MMMM, YYYY')) {
+            setErrorText('Selecione meses diferentes')
             return false
         }
         return true
@@ -76,11 +76,11 @@ export default function CopyBudget() {
         await ensureSession();
         if (verifyInputs()) {
 
-            let allSections = await supaSections(currentBudget.budgetID, dayjs(fromMonth).format('MMMM'), Number(dayjs(fromMonth).format('YYYY')))
+            let allSections = await supaSections(currentBudget.budgetID, dayjs(fromMonth).locale('en').format('MMMM'), Number(dayjs(fromMonth).format('YYYY')))
             if (allSections === null) {
-                setErrorText('no sections found for the from month')
+                setErrorText('nenhuma seção encontrada no mês de origem')
                 setSnackSev('error')
-                setSnackText('No data found')
+                setSnackText('Nenhum dado encontrado')
                 setSnackOpen(true)
                 return
             }
@@ -91,7 +91,7 @@ export default function CopyBudget() {
                 sectionName: x.sectionName,
                 sectionType: x.sectionType,
                 sectionYear: Number(dayjs(toMonth).format('YYYY')),
-                sectionMonth: dayjs(toMonth).format('MMMM'),
+                sectionMonth: dayjs(toMonth).locale('en').format('MMMM'),
             }))
             for (let i = 0; i < newSectionArray.length; i++) {
                 let { error } = await supabase
@@ -125,7 +125,7 @@ export default function CopyBudget() {
             }
 
             // Update local state if the target month matches the currently viewed month
-            const targetMonth = dayjs(toMonth).format('MMMM')
+            const targetMonth = dayjs(toMonth).locale('en').format('MMMM')
             const targetYear = Number(dayjs(toMonth).format('YYYY'))
             if (currentBudget.month === targetMonth && currentBudget.year === targetYear) {
                 setSections((prev: any[]) => [...prev, ...newSectionArray])
@@ -135,7 +135,7 @@ export default function CopyBudget() {
             setLoadingOpen(false)
             setOpenCopyBudget(false)
             setSnackSev('success')
-            setSnackText('Budget data copied!')
+            setSnackText('Orçamento copiado!')
             setSnackOpen(true)
         }
     }
@@ -150,19 +150,19 @@ export default function CopyBudget() {
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }} component='form' onSubmit={handleSubmit}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Stack direction='row' alignItems='center' spacing={1}>
-                            <div>Copy Budget Outline</div>
+                            <div>Copiar Estrutura do Orçamento</div>
                         </Stack>
                         <IconButton onClick={() => setOpenCopyBudget(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Grid container spacing={2}>
                             <OfflineAlert />
-                            <Typography>This will copy all sections and categories from one month to another. </Typography>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Typography>Copia todas as seções e categorias de um mês para outro. </Typography>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
                                 <Grid size={12}>
                                     <DatePicker
                                         views={['year', 'month']}
-                                        label="Copy From"
+                                        label="Copiar De"
                                         minDate={dayjs().subtract(2, 'year')}
                                         maxDate={dayjs().add(2, 'year')}
                                         value={fromMonth}
@@ -178,7 +178,7 @@ export default function CopyBudget() {
                                 <Grid size={12}>
                                     <DatePicker
                                         views={['year', 'month']}
-                                        label="Copy To"
+                                        label="Copiar Para"
                                         value={toMonth}
                                         minDate={dayjs().subtract(2, 'year')}
                                         maxDate={dayjs().add(2, 'year')}
@@ -196,7 +196,7 @@ export default function CopyBudget() {
                     </DialogContent>
                     <Box sx={{ mx: 1, mt: 0.5 }}><Typography color='error'>{errorText}</Typography></Box>
                     <DialogActions>
-                        <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit' disabled={offline}>Copy Data</Button>
+                        <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit' disabled={offline}>Copiar</Button>
                     </DialogActions>
                 </Box>
             </Dialog>

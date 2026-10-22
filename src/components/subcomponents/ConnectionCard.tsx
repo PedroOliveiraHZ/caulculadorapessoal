@@ -42,7 +42,7 @@ export default function ConnectionCard() {
 
     const renderStatusChip = () => {
         if (!isOnline) {
-            const label = pendingCount > 0 ? `Offline · ${pendingCount} pending` : 'Offline';
+            const label = pendingCount > 0 ? `Offline · ${pendingCount} pendente(s)` : 'Offline';
             return (
                 <Chip
                     icon={<CloudOffIcon />}
@@ -82,7 +82,7 @@ export default function ConnectionCard() {
     return (
         <Paper elevation={CARD_ELEVATION} sx={{ ...cardSx, p: 3 }}>
             <Typography color="text.secondary" variant="subtitle2" sx={{ fontWeight: 800, mb: 2.5, textTransform: 'uppercase' }}>
-                Connection
+                Conexão
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1.5 }}>
                 {renderStatusChip()}
@@ -93,7 +93,7 @@ export default function ConnectionCard() {
                     onClick={handleRefresh}
                     sx={{ textTransform: 'none', borderRadius: 2 }}
                 >
-                    Refresh
+                    Atualizar
                 </Button>
             </Box>
         </Paper>

@@ -38,11 +38,11 @@ export default function ChangePassword() {
     const bigger = useMediaQuery(theme.breakpoints.up('sm'));
     const verifyInputs = () => {
         if (newPassword0 !== newPassword1) {
-            setErrorText('New passwords must match!')
+            setErrorText('As novas senhas precisam coincidir!')
             return false
         }
         if (!currentPassword) {
-            setErrorText('Please enter your current password')
+            setErrorText('Informe sua senha atual')
         }
         return true
     }
@@ -60,7 +60,7 @@ export default function ChangePassword() {
             }
             setOpenModal(false)
             setSnackSev('success')
-            setSnackText('Password Saved!')
+            setSnackText('Senha salva!')
             setSnackOpen(true)
         }
     }
@@ -81,7 +81,7 @@ export default function ChangePassword() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%' }} component='form' onSubmit={handleSubmit}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        Change Password <IconButton onClick={() => setOpenModal(false)}><CloseIcon /></IconButton>
+                        Alterar Senha <IconButton onClick={() => setOpenModal(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <DialogContent dividers>
                         <Grid container spacing={2}>
@@ -90,13 +90,13 @@ export default function ChangePassword() {
                                     fullWidth
                                     name="current"
                                     type={showPassword0 ? 'text' : 'password'}
-                                    label="Current Password"
+                                    label="Senha Atual"
                                     value={currentPassword}
                                     slotProps={{
                                         input: {
                                             endAdornment: <InputAdornment position="end">
                                                 <IconButton
-                                                    aria-label="toggle password visibility"
+                                                    aria-label="mostrar/ocultar senha"
                                                     onClick={() => {
                                                         setShowPassword0(!showPassword0)
                                                     }}
@@ -118,13 +118,13 @@ export default function ChangePassword() {
                                     fullWidth
                                     name="new"
                                     type={showPassword1 ? 'text' : 'password'}
-                                    label="New Password"
+                                    label="Nova Senha"
                                     value={newPassword0}
                                     slotProps={{
                                         input: {
                                             endAdornment: <InputAdornment position="end">
                                                 <IconButton
-                                                    aria-label="toggle password visibility"
+                                                    aria-label="mostrar/ocultar senha"
                                                     onClick={() => {
                                                         setShowPassword1(!showPassword1)
                                                     }}
@@ -146,13 +146,13 @@ export default function ChangePassword() {
                                     fullWidth
                                     name="newRepeat"
                                     type={showPassword2 ? 'text' : 'password'}
-                                    label="New Password Again"
+                                    label="Repita a Nova Senha"
                                     value={newPassword1}
                                     slotProps={{
                                         input: {
                                             endAdornment: <InputAdornment position="end">
                                                 <IconButton
-                                                    aria-label="toggle password visibility"
+                                                    aria-label="mostrar/ocultar senha"
                                                     onClick={() => {
                                                         setShowPassword2(!showPassword2)
                                                     }}
@@ -173,7 +173,7 @@ export default function ChangePassword() {
                     </DialogContent>
                     <Box sx={{ mx: 1, mt: 0.5 }}><Typography color='error'>{errorText}</Typography></Box>
                     <DialogActions>
-                        <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit'>Save New Password</Button>
+                        <Button fullWidth startIcon={<SaveIcon />} variant='contained' type='submit'>Salvar Nova Senha</Button>
                     </DialogActions>
                 </Box>
             </Dialog>

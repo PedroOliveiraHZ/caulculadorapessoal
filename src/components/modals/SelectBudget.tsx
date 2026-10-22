@@ -65,12 +65,12 @@ export default function SelectBudget() {
     function grabUserName(creatorID: string) {
         let output
         if (creatorID === userData.recordID) {
-            output = 'Me'
+            output = 'Eu'
         } else {
             output = userNamesArray.find(x => x.recordID === creatorID)?.fullName
         }
         if (output === undefined) {
-            output = 'Not Found'
+            output = 'Não encontrado'
         }
         return output
     }
@@ -79,12 +79,12 @@ export default function SelectBudget() {
             setCurrentBudget({
                 budgetID: newBudgetID,
                 year: currentBudgetDetails.year !== null ? currentBudgetDetails.year : Number(dayjs().format('YYYY')),
-                month: currentBudgetDetails.month !== null ? currentBudgetDetails.month : dayjs().format('MMMM')
+                month: currentBudgetDetails.month !== null ? currentBudgetDetails.month : dayjs().locale('en').format('MMMM')
             })
             localStorage.setItem('currentBudget', JSON.stringify({
                 budgetID: newBudgetID,
                 year: currentBudgetDetails.year !== null ? currentBudgetDetails.year : Number(dayjs().format('YYYY')),
-                month: currentBudgetDetails.month !== null ? currentBudgetDetails.month : dayjs().format('MMMM')
+                month: currentBudgetDetails.month !== null ? currentBudgetDetails.month : dayjs().locale('en').format('MMMM')
             }))
             setCreateNewBudget(false)
             await grabBudgetData(newBudgetID, currentBudgetDetails.year, currentBudgetDetails.month)
@@ -102,7 +102,7 @@ export default function SelectBudget() {
             >
                 <Box sx={{ bgcolor: 'background.paper', height: '100%', minWidth: 250 }}>
                     <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        Select Budget<IconButton onClick={() => setOpen(false)}><CloseIcon /></IconButton>
+                        Selecionar Orçamento<IconButton onClick={() => setOpen(false)}><CloseIcon /></IconButton>
                     </DialogTitle>
                     <List sx={{ pt: 0 }}>
                         {budgetsArray.map((row) => (
@@ -125,8 +125,8 @@ export default function SelectBudget() {
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText
-                                    primary="Add Budget"
-                                    secondary={!canCreateBudget ? "Pro feature" : undefined}
+                                    primary="Criar Orçamento"
+                                    secondary={!canCreateBudget ? "Recurso Pro" : undefined}
                                 />
                                 {!canCreateBudget && <Chip label="Pro" size="small" variant="outlined" sx={{ ml: 1 }} />}
                             </ListItemButton>
